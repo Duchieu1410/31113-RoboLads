@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "sanity-best-practices": {
+      "source": "sanity-io/agent-toolkit",
+      "sourceType": "github",
+      "skillPath": "skills/sanity-best-practices/SKILL.md",
+      "computedHash": "affe391c61d15bd3a736366d4aa0bf7ba8141617c9badafd83c6ea5197edd88e"
+    }
+  }
+}
