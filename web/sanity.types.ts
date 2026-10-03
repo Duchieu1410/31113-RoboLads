@@ -15,6 +15,49 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type SanityFileAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+};
+
+export type Resource = {
+  _id: string;
+  _type: "resource";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  title?: string;
+  category?: "CAD" | "Programming" | "Mechanical" | "Failure Log";
+  tags?: Array<string>;
+  description?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "blockquote";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+  file?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  author?: string;
+  publishedAt?: string;
+};
+
 export type Post = {
   _id: string;
   _type: "post";
@@ -163,6 +206,8 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | SanityFileAssetReference
+  | Resource
   | Post
   | Slug
   | SanityImagePaletteSwatch
@@ -211,11 +256,103 @@ export type POSTS_QUERY_RESULT = Array<{
   slug: Slug | null;
 }>;
 
+// Source: ../web/src/lib/queries.ts
+// Variable: ALL_RESOURCES_QUERY
+// Query: *[_type == "resource"     && (!defined($category) || category == $category)     && (!defined($tag) || $tag in tags)  ] | order(publishedAt desc) {    _id,    _type,    _createdAt,    _updatedAt,    title,    category,    tags,    description,    author,    publishedAt,    file {      ...,      asset-> {        _id,        url,        originalFilename,        extension,        mimeType,        size      }    }  }
+export type ALL_RESOURCES_QUERY_RESULT = Array<{
+  _id: string;
+  _type: "resource";
+  _createdAt: string;
+  _updatedAt: string;
+  title: string | null;
+  category: "CAD" | "Failure Log" | "Mechanical" | "Programming" | null;
+  tags: Array<string> | null;
+  description: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }> | null;
+  author: string | null;
+  publishedAt: string | null;
+  file: {
+    asset: {
+      _id: string;
+      url: string | null;
+      originalFilename: string | null;
+      extension: string | null;
+      mimeType: string | null;
+      size: number | null;
+    } | null;
+    media?: unknown;
+    _type: "file";
+  } | null;
+}>;
+
+// Source: ../web/src/lib/queries.ts
+// Variable: RESOURCE_BY_ID_QUERY
+// Query: *[_type == "resource" && _id == $id][0] {    _id,    _type,    _createdAt,    _updatedAt,    title,    category,    tags,    description,    author,    publishedAt,    file {      ...,      asset-> {        _id,        url,        originalFilename,        extension,        mimeType,        size      }    }  }
+export type RESOURCE_BY_ID_QUERY_RESULT = {
+  _id: string;
+  _type: "resource";
+  _createdAt: string;
+  _updatedAt: string;
+  title: string | null;
+  category: "CAD" | "Failure Log" | "Mechanical" | "Programming" | null;
+  tags: Array<string> | null;
+  description: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }> | null;
+  author: string | null;
+  publishedAt: string | null;
+  file: {
+    asset: {
+      _id: string;
+      url: string | null;
+      originalFilename: string | null;
+      extension: string | null;
+      mimeType: string | null;
+      size: number | null;
+    } | null;
+    media?: unknown;
+    _type: "file";
+  } | null;
+} | null;
+
 // Query TypeMap
 declare global {
   interface SanityQueries {
     '*[_type == "post" && slug.current == $slug][0]{ _id, title, body }': POST_QUERY_RESULT;
     '*[_type == "post" && defined(slug.current)] | order(_createdAt desc){ _id, title, slug }': POSTS_QUERY_RESULT;
+    '\n  *[_type == "resource" \n    && (!defined($category) || category == $category) \n    && (!defined($tag) || $tag in tags)\n  ] | order(publishedAt desc) {\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    title,\n    category,\n    tags,\n    description,\n    author,\n    publishedAt,\n    file {\n      ...,\n      asset-> {\n        _id,\n        url,\n        originalFilename,\n        extension,\n        mimeType,\n        size\n      }\n    }\n  }\n': ALL_RESOURCES_QUERY_RESULT;
+    '\n  *[_type == "resource" && _id == $id][0] {\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    title,\n    category,\n    tags,\n    description,\n    author,\n    publishedAt,\n    file {\n      ...,\n      asset-> {\n        _id,\n        url,\n        originalFilename,\n        extension,\n        mimeType,\n        size\n      }\n    }\n  }\n': RESOURCE_BY_ID_QUERY_RESULT;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too
