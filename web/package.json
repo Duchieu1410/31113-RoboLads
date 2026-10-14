@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test:crud": "node scripts/test-crud.mjs"
+    "test:crud": "node scripts/test-crud.mjs",
+    "test:api": "node scripts/test-analytics.mjs",
+    "test:analytics": "node scripts/test-analytics.mjs"
   },
   "dependencies": {
     "@sanity/image-url": "^2.1.1",

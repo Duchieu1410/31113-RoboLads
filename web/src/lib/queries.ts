@@ -67,6 +67,44 @@ export interface ResourceFilterOptions {
   tag?: string;
 }
 
+export type AnalyticsEventType = "view" | "download";
+
+export interface AnalyticsEvent {
+  _id: string;
+  _type: "analyticsEvent";
+  _createdAt?: string;
+  _updatedAt?: string;
+  type: AnalyticsEventType;
+  resourceId: {
+    _type: "reference";
+    _ref: string;
+  };
+  timestamp: string;
+}
+
+export interface ResourceAnalyticsSummary {
+  resourceId: string;
+  title?: string;
+  views: number;
+  downloads: number;
+}
+
+export interface AnalyticsSummary {
+  totalViews: number;
+  totalDownloads: number;
+  topViewed: Array<{
+    resourceId: string;
+    title?: string;
+    views: number;
+  }>;
+  topDownloaded: Array<{
+    resourceId: string;
+    title?: string;
+    downloads: number;
+  }>;
+  byResource: ResourceAnalyticsSummary[];
+}
+
 // ============================================================================
 // GROQ Queries
 // ============================================================================
@@ -174,7 +212,7 @@ export async function getAllResources(
 
   const results = await sanityClient.fetch<Resource[]>(
     ALL_RESOURCES_QUERY,
-    { category, tag } as any,
+    { category: category ?? null, tag: tag ?? null } as any,
     options
   );
 
@@ -200,4 +238,63 @@ export async function getResourceById(
   );
 
   return result ?? null;
+}
+
+/**
+ * GROQ query to calculate analytics summary:
+ * - total views and downloads
+ * - top 5 most-viewed resources with titles
+ * - top 5 most-downloaded resources with titles
+ * - all resources grouped by resourceId with titles and event counts
+ */
+export const ANALYTICS_SUMMARY_QUERY = defineQuery(`{
+  "totalViews": count(*[_type == "analyticsEvent" && type == "view"]),
+  "totalDownloads": count(*[_type == "analyticsEvent" && type == "download"]),
+  "topViewed": *[_type == "resource"] {
+    "resourceId": _id,
+    title,
+    "views": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "view"])
+  } | order(views desc)[0...5],
+  "topDownloaded": *[_type == "resource"] {
+    "resourceId": _id,
+    title,
+    "downloads": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "download"])
+  } | order(downloads desc)[0...5],
+  "byResource": *[_type == "resource"] {
+    "resourceId": _id,
+    title,
+    "views": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "view"]),
+    "downloads": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "download"])
+  }
+}`);
+
+/**
+ * Fetches the analytics summary from Sanity Content Lake.
+ * Bypasses CDN by default to provide real-time dashboard data.
+ *
+ * Usage example:
+ *  - const summary = await getAnalyticsSummary();
+ */
+export async function getAnalyticsSummary(
+  options?: SanityFetchOptions & { useCdn?: boolean }
+): Promise<AnalyticsSummary> {
+  const clientToUse = options?.useCdn
+    ? sanityClient
+    : sanityClient.withConfig({ useCdn: false });
+
+  const summary = await clientToUse.fetch<AnalyticsSummary>(
+    ANALYTICS_SUMMARY_QUERY,
+    {},
+    options
+  );
+
+  return (
+    summary ?? {
+      totalViews: 0,
+      totalDownloads: 0,
+      topViewed: [],
+      topDownloaded: [],
+      byResource: [],
+    }
+  );
 }

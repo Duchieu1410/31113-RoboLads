@@ -15,6 +15,24 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: schema.json
+export type ResourceReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "resource";
+};
+
+export type AnalyticsEvent = {
+  _id: string;
+  _type: "analyticsEvent";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  type?: "view" | "download";
+  resourceId?: ResourceReference;
+  timestamp?: string;
+};
+
 export type SanityFileAssetReference = {
   _ref: string;
   _type: "reference";
@@ -206,6 +224,8 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | ResourceReference
+  | AnalyticsEvent
   | SanityFileAssetReference
   | Resource
   | Post
@@ -346,6 +366,30 @@ export type RESOURCE_BY_ID_QUERY_RESULT = {
   } | null;
 } | null;
 
+// Source: ../web/src/lib/queries.ts
+// Variable: ANALYTICS_SUMMARY_QUERY
+// Query: {  "totalViews": count(*[_type == "analyticsEvent" && type == "view"]),  "totalDownloads": count(*[_type == "analyticsEvent" && type == "download"]),  "topViewed": *[_type == "resource"] {    "resourceId": _id,    title,    "views": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "view"])  } | order(views desc)[0...5],  "topDownloaded": *[_type == "resource"] {    "resourceId": _id,    title,    "downloads": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "download"])  } | order(downloads desc)[0...5],  "byResource": *[_type == "resource"] {    "resourceId": _id,    title,    "views": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "view"]),    "downloads": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "download"])  }}
+export type ANALYTICS_SUMMARY_QUERY_RESULT = {
+  totalViews: number;
+  totalDownloads: number;
+  topViewed: Array<{
+    resourceId: string;
+    title: string | null;
+    views: number;
+  }>;
+  topDownloaded: Array<{
+    resourceId: string;
+    title: string | null;
+    downloads: number;
+  }>;
+  byResource: Array<{
+    resourceId: string;
+    title: string | null;
+    views: number;
+    downloads: number;
+  }>;
+};
+
 // Query TypeMap
 declare global {
   interface SanityQueries {
@@ -353,6 +397,7 @@ declare global {
     '*[_type == "post" && defined(slug.current)] | order(_createdAt desc){ _id, title, slug }': POSTS_QUERY_RESULT;
     '\n  *[_type == "resource" \n    && (!defined($category) || category == $category) \n    && (!defined($tag) || $tag in tags)\n  ] | order(publishedAt desc) {\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    title,\n    category,\n    tags,\n    description,\n    author,\n    publishedAt,\n    file {\n      ...,\n      asset-> {\n        _id,\n        url,\n        originalFilename,\n        extension,\n        mimeType,\n        size\n      }\n    }\n  }\n': ALL_RESOURCES_QUERY_RESULT;
     '\n  *[_type == "resource" && _id == $id][0] {\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    title,\n    category,\n    tags,\n    description,\n    author,\n    publishedAt,\n    file {\n      ...,\n      asset-> {\n        _id,\n        url,\n        originalFilename,\n        extension,\n        mimeType,\n        size\n      }\n    }\n  }\n': RESOURCE_BY_ID_QUERY_RESULT;
+    '{\n  "totalViews": count(*[_type == "analyticsEvent" && type == "view"]),\n  "totalDownloads": count(*[_type == "analyticsEvent" && type == "download"]),\n  "topViewed": *[_type == "resource"] {\n    "resourceId": _id,\n    title,\n    "views": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "view"])\n  } | order(views desc)[0...5],\n  "topDownloaded": *[_type == "resource"] {\n    "resourceId": _id,\n    title,\n    "downloads": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "download"])\n  } | order(downloads desc)[0...5],\n  "byResource": *[_type == "resource"] {\n    "resourceId": _id,\n    title,\n    "views": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "view"]),\n    "downloads": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "download"])\n  }\n}': ANALYTICS_SUMMARY_QUERY_RESULT;
   }
 }
 // Lets @sanity/client releases that predate the global registry read it too
