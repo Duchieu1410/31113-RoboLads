@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { 
   LayoutDashboard, 
   FolderKanban, 
@@ -12,8 +13,6 @@ import {
   Download, 
   FileText, 
   Search,
-  Lock,
-  User,
   X
 } from 'lucide-react';
 
@@ -24,9 +23,8 @@ const INITIAL_MOCK_RESOURCES = [
 ];
 
 export default function AdminPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
   const [activeTab, setActiveTab] = useState('resources');
   const [resources, setResources] = useState(INITIAL_MOCK_RESOURCES);
@@ -36,13 +34,20 @@ export default function AdminPage() {
   const [editingResource, setEditingResource] = useState<any>(null);
   const [formData, setFormData] = useState({ title: '', category: 'CAD', author: 'Nguyễn Việt Khang' });
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (username.trim() && password.trim()) {
-      setIsAuthenticated(true);
+  // Protected Route Logic: Kiểm tra trạng thái đăng nhập khi vào trang
+  useEffect(() => {
+    const isLoggedIn = localStorage.getItem('admin_logged_in');
+    if (!isLoggedIn) {
+      // Nếu chưa đăng nhập, tự động redirect về trang login
+      router.push('/admin/login');
     } else {
-      alert('Vui lòng nhập tài khoản và mật khẩu!');
+      setIsLoading(false);
     }
+  }, [router]);
+
+  const handleLogout = () => {
+    localStorage.removeItem('admin_logged_in');
+    router.push('/admin/login');
   };
 
   const handleOpenModal = (item: any = null) => {
@@ -79,49 +84,11 @@ export default function AdminPage() {
     }
   };
 
-  if (!isAuthenticated) {
+  // Hiển thị màn hình chờ trong lúc kiểm tra xác thực
+  if (isLoading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4 text-slate-100">
-        <div className="bg-slate-800 p-8 rounded-xl shadow-2xl w-full max-w-md border border-slate-700">
-          <div className="text-center mb-8">
-            <h1 className="text-2xl font-bold text-white mb-2">RBL Team Admin Portal</h1>
-            <p className="text-slate-400 text-sm">Đăng nhập để quản lý nội dung & tài nguyên</p>
-          </div>
-          <form onSubmit={handleLogin} className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1">Tài khoản</label>
-              <div className="relative">
-                <User className="absolute left-3 top-3 h-5 w-5 text-slate-500" />
-                <input 
-                  type="text" 
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="admin"
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg pl-10 pr-4 py-2 text-white focus:outline-none focus:border-blue-500"
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-300 mb-1">Mật khẩu</label>
-              <div className="relative">
-                <Lock className="absolute left-3 top-3 h-5 w-5 text-slate-500" />
-                <input 
-                  type="password" 
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••"
-                  className="w-full bg-slate-900 border border-slate-700 rounded-lg pl-10 pr-4 py-2 text-white focus:outline-none focus:border-blue-500"
-                />
-              </div>
-            </div>
-            <button 
-              type="submit" 
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition-colors"
-            >
-              Đăng nhập
-            </button>
-          </form>
-        </div>
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center text-slate-400">
+        Đang kiểm tra quyền truy cập...
       </div>
     );
   }
@@ -157,7 +124,7 @@ export default function AdminPage() {
           </nav>
         </div>
         <button 
-          onClick={() => setIsAuthenticated(false)} 
+          onClick={handleLogout} 
           className="flex items-center gap-3 px-4 py-3 text-slate-400 hover:text-red-400 hover:bg-slate-800 rounded-lg text-sm transition-colors"
         >
           <LogOut className="h-5 w-5" /> Đăng xuất
