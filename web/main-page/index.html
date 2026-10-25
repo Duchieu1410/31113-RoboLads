@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HSGS ROBOLADS</title>
+    
+    <!-- Nhúng Font chữ Pixel và Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Inter:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Liên kết file CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Thanh Navigation Bar -->
+    <header class="navbar">
+        <div class="navbar-logo">
+            <img src="Photo/logo.png" alt="Logo">
+        </div>
+
+        <nav class="navbar-menu">
+            <button class="nav-btn" onclick="scrollToSection('about-target')">ABOUT US</button>
+            <button class="nav-btn">FTC TEAM</button>
+            <button class="nav-btn">RESOURCES</button>
+            <button class="nav-btn">EVENTS</button>
+        </nav>
+    </header>
+
+    <!-- Section 1: Hero Section -->
+    <section class="hero">
+        <h1 class="hero-title">
+            <span class="line line1" id="line1"></span>
+            <span class="line line2" id="line2"></span>
+        </h1>
+    </section>
+
+    <!-- Section 2: About Robolads -->
+    <section class="about-section" id="about-target">
+        <div class="about-card">
+            <div class="typing-overlay">
+                <span class="pixel-title" id="about-typewriter"></span>
+            </div>
+            <!-- Đã đổi sang IMG_9478.jpg -->
+            <img src="Photo/IMG_9478.jpg" alt="About Robolads Team">
+        </div>
+    </section>
+
+    <!-- Section 3: Welcome & Purpose Grid -->
+    <section class="details-section">
+        <!-- Cột Trái: Welcome to HSGS Robolads & Bảng thông số -->
+        <div class="custom-card">
+            <div>
+                <div class="tag-yellow">WELCOME TO</div>
+                <h2 class="heading-pixel">HSGS ROBOLADS</h2>
+                <p class="paragraph-text">
+                    FTC 31113 Robolads là đội tuyển FIRST Tech Challenge được thành lập năm 2025, trực thuộc HSGS RoboLads và đại diện cho Trường THPT Chuyên Khoa học Tự nhiên. Đội tập trung vào thiết kế, chế tạo và lập trình robot thi đấu, đồng thời phát triển tư duy kỹ thuật, chiến lược và tinh thần làm việc nhóm. Bên cạnh thi đấu, FTC 31113 tích cực đóng góp cho cộng đồng robotics và STEM qua các hoạt động hợp tác, chia sẻ và lan tỏa kiến thức.
+                </p>
+            </div>
+
+            <div class="stats-box">
+                <div class="stats-row">
+                    <span class="stats-label">THÀNH LẬP:</span>
+                    <span class="stats-val">2025</span>
+                </div>
+                <div class="stats-row">
+                    <span class="stats-label">TRƯỜNG:</span>
+                    <span class="stats-val">HSGS</span>
+                </div>
+                <div class="stats-row">
+                    <span class="stats-label">MÃ ĐỘI FTC:</span>
+                    <span class="stats-val">31113</span>
+                </div>
+                <div class="stats-row">
+                    <span class="stats-label">THÀNH VIÊN:</span>
+                    <span class="stats-val">40–50 thành viên</span>
+                </div>
+                <div class="stats-row">
+                    <span class="stats-label">LĨNH VỰC:</span>
+                    <span class="stats-val">Robotics, STEM, Cộng đồng</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cột Phải: Sứ Mệnh & Hình Ảnh -->
+        <div class="right-column">
+            <div class="custom-card">
+                <div>
+                    <div class="tag-yellow">OUR PURPOSE</div>
+                    <h2 class="heading-bold">SỨ MỆNH CỦA CHÚNG TÔI</h2>
+                    <ul class="mission-list">
+                        <li>Phát triển kỹ năng robotics và lập trình cho học sinh</li>
+                        <li>Lan tỏa tinh thần STEM đến cộng đồng</li>
+                        <li>Tham gia các cuộc thi robotics trong và ngoài nước</li>
+                        <li>Quảng bá một môi trường học tập sáng tạo, logic và gắn kết</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Đã đổi sang join-us-gen2.jpg -->
+            <div class="join-card">
+                <img src="Photo/join-us-gen2.jpg" alt="Join Us Gen 2">
+            </div>
+        </div>
+    </section>
+    <!-- Section 4: HOẠT ĐỘNG CHÍNH -->
+    <section class="activities-section" id="activities-target">
+        <div class="activities-header">
+            <div class="tag-yellow">WHAT WE DO</div>
+            <h2 class="activities-title">HOẠT ĐỘNG CHÍNH</h2>
+        </div>
+
+        <div class="cards-accordion">
+            <!-- Thẻ 1: Thiết Kế & Chế Tạo (Màu Vàng) -->
+            <div class="activity-card card-yellow">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                </div>
+                <div class="card-img-box">
+                    <img src="Photo/cad-robot.png" alt="Thiết kế & Chế tạo robot">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">THIẾT KẾ & CHẾ TẠO ROBOT</h3>
+                    <p class="card-desc">Xây dựng robot cho các kì thi trong và ngoài nước.</p>
+                </div>
+            </div>
+
+            <!-- Thẻ 2: Workshop & Training (Màu Trắng) -->
+            <div class="activity-card card-white">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+                </div>
+                <div class="card-img-box">
+                    <img src="Photo/workshop.jpg" alt="Workshop & Training">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">WORKSHOP & TRAINING</h3>
+                    <p class="card-desc">Xây dựng cộng đồng robotics nơi học sinh có thể học hỏi và sáng tạo.</p>
+                </div>
+            </div>
+
+            <!-- Thẻ 3: Hoạt Động Cộng Đồng (Màu Navy) -->
+            <div class="activity-card card-navy">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                </div>
+                <div class="card-img-box">
+                    <img src="Photo/community.jpg" alt="Hoạt động cộng đồng">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">HOẠT ĐỘNG CỘNG ĐỒNG</h3>
+                    <p class="card-desc">Tổ chức các sự kiện Ignite Tour đến các trường trong nước.</p>
+                </div>
+            </div>
+
+            <!-- Thẻ 4: Thi Đấu (Màu Đen) -->
+            <div class="activity-card card-dark">
+                <div class="card-icon">
+                    <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.45 1-1 1H8c-.55 0-1 .45-1 1v1h10v-1c0-.55-.45-1-1-1h-1c-.55 0-1-.45-1-1v-2.34"/><path d="M18 4H6v7a6 6 0 0 0 12 0V4z"/></svg>
+                </div>
+                <div class="card-img-box">
+                    <img src="Photo/competition.jpg" alt="Thi đấu">
+                </div>
+                <div class="card-content">
+                    <h3 class="card-title">THI ĐẤU</h3>
+                    <p class="card-desc">Tham gia giải đấu robotics như FTC, FARC, VORC, ORC,...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dòng Slogan Pixel -->
+        <div class="blast-slogan">
+            —ROBOLADS READY TO BLAST—
+        </div>
+    </section>
+
+    <!-- Nút Lên Đầu Trang -->
+    <button class="btn-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        ▲ TOP
+    </button>
+
+    <!-- Liên kết file JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
