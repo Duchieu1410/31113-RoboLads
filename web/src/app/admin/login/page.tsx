@@ -8,20 +8,34 @@ export default function AdminLoginPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setLoading(true);
 
-    // Giả lập kiểm tra tài khoản (W+3)
-    if (username === 'admin' && password === 'admin123') {
-      // Lưu trạng thái đăng nhập vào localStorage
-      localStorage.setItem('admin_logged_in', 'true');
-      // Chuyển hướng vào trang quản trị admin chính
+    try {
+      const response = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Tài khoản hoặc mật khẩu không chính xác!');
+      }
+
+      // Server đã set cookie httpOnly, không cần lưu gì vào localStorage.
       router.push('/admin');
-    } else {
-      setError('Tài khoản hoặc mật khẩu không chính xác!');
+      router.refresh();
+    } catch (err: any) {
+      setError(err.message || 'Không thể kết nối đến máy chủ đăng nhập.');
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -44,12 +58,13 @@ export default function AdminLoginPage() {
             <label className="block text-sm font-medium text-slate-300 mb-1">Tài khoản</label>
             <div className="relative">
               <User className="absolute left-3 top-3 h-5 w-5 text-slate-500" />
-              <input 
-                type="text" 
+              <input
+                type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 placeholder="admin"
                 required
+                autoComplete="username"
                 className="w-full bg-slate-900 border border-slate-700 rounded-lg pl-10 pr-4 py-2 text-white focus:outline-none focus:border-blue-500"
               />
             </div>
@@ -58,21 +73,23 @@ export default function AdminLoginPage() {
             <label className="block text-sm font-medium text-slate-300 mb-1">Mật khẩu</label>
             <div className="relative">
               <Lock className="absolute left-3 top-3 h-5 w-5 text-slate-500" />
-              <input 
-                type="password" 
+              <input
+                type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
                 required
+                autoComplete="current-password"
                 className="w-full bg-slate-900 border border-slate-700 rounded-lg pl-10 pr-4 py-2 text-white focus:outline-none focus:border-blue-500"
               />
             </div>
           </div>
-          <button 
-            type="submit" 
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 rounded-lg transition-colors"
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-800 text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center"
           >
-            Đăng nhập
+            {loading ? 'Đang xử lý...' : 'Đăng nhập'}
           </button>
         </form>
       </div>
