@@ -1,0 +1,758 @@
+/* ==========================================================================
+   ROBOLADS LANDING PAGE STYLES
+   Ported from web/main-page/style.css with responsive & fallback enhancements
+   ========================================================================== */
+
+.landing-root {
+  background-color: #08081a;
+  color: #ffffff;
+  min-height: 100vh;
+  position: relative;
+  font-family: 'Press Start 2P', monospace;
+  overflow-x: hidden;
+}
+
+/* Custom Scrollbar for Landing Page */
+.landing-root ::-webkit-scrollbar {
+  width: 10px;
+}
+.landing-root ::-webkit-scrollbar-track {
+  background: #08081a;
+}
+.landing-root ::-webkit-scrollbar-thumb {
+  background: #2a2a4a;
+  border-radius: 5px;
+}
+.landing-root ::-webkit-scrollbar-thumb:hover {
+  background: #4a4a7a;
+}
+
+/* ==========================================================================
+   1. NAVIGATION BAR (STICKY HEADER)
+   ========================================================================== */
+.landing-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.92);
+  backdrop-filter: blur(8px);
+  padding: 15px 30px;
+  width: 100%;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.7);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.landing-navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.landing-navbar-logo img {
+  height: 42px;
+  width: auto;
+  object-fit: contain;
+}
+
+.landing-navbar-logo-text {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  color: #ffcc00;
+  letter-spacing: 1px;
+}
+
+.landing-navbar-menu {
+  display: flex;
+  gap: 28px;
+  align-items: center;
+}
+
+.landing-nav-btn {
+  background: none;
+  border: none;
+  color: #ffffff;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 8px 10px;
+  transition: all 0.2s ease-in-out;
+  letter-spacing: 1px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.landing-nav-btn:hover {
+  color: #ffcc00;
+  transform: translateY(-2px);
+}
+
+.landing-nav-btn:active {
+  transform: translateY(0);
+}
+
+.landing-nav-badge {
+  margin-left: 6px;
+  font-size: 8px;
+  background: #ffb800;
+  color: #000;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+/* ==========================================================================
+   2. HERO SECTION
+   ========================================================================== */
+.landing-hero {
+  position: relative;
+  width: 100%;
+  min-height: calc(100vh - 75px);
+  background-color: #08081a;
+  background-image: 
+    radial-gradient(circle at 80% 20%, rgba(255, 204, 0, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 20% 80%, rgba(30, 40, 100, 0.3) 0%, transparent 50%),
+    url("/Photo/mcrrbl.png");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  align-items: center;
+  padding: 80px 60px;
+}
+
+.landing-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(8, 8, 26, 0.95) 0%, rgba(8, 8, 26, 0.75) 50%, rgba(8, 8, 26, 0.4) 100%);
+  z-index: 1;
+}
+
+.landing-hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+}
+
+.landing-hero-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 58px;
+  line-height: 1.4;
+  letter-spacing: 2px;
+}
+
+.landing-line {
+  display: block;
+  min-height: 1.4em;
+}
+
+.landing-line1 {
+  color: #ffffff;
+  text-shadow: 4px 4px 0 #1a224a;
+}
+
+.landing-line2 {
+  color: #ffcc00;
+  text-shadow: 4px 4px 0 #000000;
+}
+
+.landing-cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 0.9em;
+  background: #ffcc00;
+  margin-left: 6px;
+  vertical-align: middle;
+  animation: landingBlink 0.7s steps(1) infinite;
+}
+
+@keyframes landingBlink {
+  50% { opacity: 0; }
+}
+
+.landing-hero-cta {
+  margin-top: 40px;
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.landing-cta-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #ffcc00;
+  color: #000000;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  padding: 14px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: transform 0.2s, background-color 0.2s;
+  box-shadow: 0 4px 15px rgba(255, 204, 0, 0.3);
+}
+
+.landing-cta-primary:hover {
+  background-color: #ffd833;
+  transform: translateY(-2px);
+}
+
+.landing-cta-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  font-family: 'Press Start 2P', monospace;
+  font-size: 12px;
+  padding: 14px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.landing-cta-secondary:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  color: #ffcc00;
+  border-color: #ffcc00;
+}
+
+/* ==========================================================================
+   3. ABOUT ROBOLADS CARD SECTION
+   ========================================================================== */
+.about-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 90px 20px 40px 20px;
+  width: 100%;
+}
+
+.about-card {
+  position: relative;
+  width: 100%;
+  max-width: 1100px;
+  min-height: 380px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+  background: linear-gradient(135deg, #0e122b 0%, #050714 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-card img {
+  width: 100%;
+  height: 100%;
+  min-height: 380px;
+  display: block;
+  object-fit: cover;
+}
+
+.about-card-placeholder {
+  width: 100%;
+  min-height: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle, #1a224a 0%, #08081a 100%);
+  padding: 40px;
+  text-align: center;
+}
+
+.typing-overlay {
+  position: absolute;
+  top: 30px;
+  left: 35px;
+  z-index: 10;
+}
+
+.pixel-title {
+  font-family: 'Press Start 2P', monospace;
+  color: #ffffff;
+  font-size: 24px;
+  line-height: 1.6;
+  letter-spacing: 2px;
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.9);
+  white-space: pre-line;
+  display: inline-block;
+}
+
+/* ==========================================================================
+   4. WELCOME & PURPOSE GRID SECTION
+   ========================================================================== */
+.details-section {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 30px 20px 90px 20px;
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+
+.custom-card {
+  background-color: #0e1023;
+  border: 1px solid #1e223d;
+  border-radius: 20px;
+  padding: 32px 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+}
+
+.tag-yellow {
+  color: #ffb800;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  margin-bottom: 14px;
+  text-transform: uppercase;
+}
+
+.heading-pixel {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 24px;
+  color: #ffffff;
+  margin-bottom: 22px;
+  line-height: 1.35;
+}
+
+.heading-bold {
+  font-family: 'Inter', sans-serif;
+  font-weight: 900;
+  font-size: 26px;
+  color: #ffffff;
+  margin-bottom: 22px;
+  letter-spacing: 0.5px;
+}
+
+.paragraph-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #c5c8d8;
+  margin-bottom: 28px;
+  text-align: justify;
+}
+
+.stats-box {
+  background-color: #080915;
+  border: 1px solid #1a1c30;
+  border-radius: 14px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.stats-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stats-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #8fa0ba;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.stats-val {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  font-weight: 800;
+  color: #ffffff;
+  text-align: right;
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.mission-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.mission-list li {
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #c5c8d8;
+  position: relative;
+  padding-left: 20px;
+}
+
+.mission-list li::before {
+  content: "•";
+  color: #ffb800;
+  font-weight: bold;
+  position: absolute;
+  left: 0;
+  font-size: 20px;
+  line-height: 14px;
+}
+
+.join-card {
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid #1e223d;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5);
+  background-color: #0e1023;
+  flex-grow: 1;
+  min-height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.join-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ==========================================================================
+   5. HOẠT ĐỘNG CHÍNH - OVERLAPPING HORIZONTAL CARDS (ACCORDION)
+   ========================================================================== */
+.activities-section {
+  max-width: 1100px;
+  margin: 40px auto 110px auto;
+  padding: 0 20px;
+}
+
+.activities-header {
+  margin-bottom: 24px;
+}
+
+.activities-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 38px;
+  font-weight: 900;
+  color: #ffffff;
+  margin-top: 8px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+.cards-accordion {
+  display: flex;
+  width: 100%;
+  height: 350px;
+  position: relative;
+  align-items: stretch;
+  padding: 10px 0;
+}
+
+.activity-card {
+  position: relative;
+  flex: 1;
+  min-width: 140px;
+  border-radius: 28px;
+  margin-left: -50px;
+  padding: 26px 28px;
+  cursor: pointer;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: -15px 0 35px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: flex 0.55s cubic-bezier(0.25, 1, 0.4, 1), padding 0.3s ease;
+}
+
+.activity-card:first-child {
+  margin-left: 0;
+  z-index: 1;
+}
+.activity-card:nth-child(2) { z-index: 2; }
+.activity-card:nth-child(3) { z-index: 3; }
+.activity-card:nth-child(4) { z-index: 4; }
+
+.activity-card:hover,
+.activity-card.active {
+  flex: 3.6;
+  padding-right: 45px;
+}
+
+.card-icon {
+  width: 36px;
+  height: 36px;
+  margin-bottom: auto;
+  transition: all 0.3s ease;
+}
+
+.card-img-box {
+  width: 100%;
+  height: 0;
+  opacity: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  flex-shrink: 0;
+  margin-bottom: 0;
+  background-color: rgba(0, 0, 0, 0.25);
+  transition: height 0.45s cubic-bezier(0.25, 1, 0.4, 1), opacity 0.35s ease 0.1s, margin 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-img-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.activity-card:hover .card-icon,
+.activity-card.active .card-icon {
+  display: none;
+}
+
+.activity-card:hover .card-img-box,
+.activity-card.active .card-img-box {
+  height: 195px;
+  opacity: 1;
+  margin-bottom: 14px;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: 170px;
+}
+
+.card-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 19px;
+  font-weight: 900;
+  line-height: 1.25;
+  letter-spacing: 0.2px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  white-space: normal;
+}
+
+.card-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  line-height: 1.45;
+}
+
+.card-yellow {
+  background-color: #ffb800;
+  color: #000000;
+}
+.card-yellow .card-icon { stroke: #000000; }
+.card-yellow .card-desc { color: #111111; }
+
+.card-white {
+  background-color: #f1f3f6;
+  color: #000000;
+}
+.card-white .card-icon { stroke: #000000; }
+.card-white .card-desc { color: #333333; }
+
+.card-navy {
+  background-color: #091b33;
+  color: #ffffff;
+}
+.card-navy .card-icon { stroke: #ffb800; }
+.card-navy .card-desc { color: #9ab0c9; }
+
+.card-dark {
+  background-color: #060913;
+  color: #ffffff;
+}
+.card-dark .card-icon { stroke: #ffb800; }
+.card-dark .card-desc { color: #8a9bb2; }
+
+.blast-slogan {
+  text-align: center;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 16px;
+  color: #ffb800;
+  margin-top: 60px;
+  letter-spacing: 2px;
+  text-shadow: 0 0 12px rgba(255, 184, 0, 0.4);
+}
+
+/* ==========================================================================
+   6. SITE DIRECTORY / FOOTER ROUTE MAP
+   ========================================================================== */
+.landing-footer {
+  background-color: #050611;
+  border-top: 1px solid #1a1e36;
+  padding: 60px 20px 40px 20px;
+  margin-top: 40px;
+}
+
+.landing-footer-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.footer-routes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 32px;
+  margin-bottom: 40px;
+}
+
+.footer-category-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  color: #ffcc00;
+  margin-bottom: 16px;
+  letter-spacing: 1px;
+}
+
+.footer-link-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.footer-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 13.5px;
+  color: #8fa0ba;
+  text-decoration: none;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-link:hover {
+  color: #ffffff;
+}
+
+.footer-bottom {
+  border-top: 1px solid #15182a;
+  padding-top: 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* ==========================================================================
+   7. BACK TO TOP BUTTON
+   ========================================================================== */
+.btn-to-top {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  padding: 12px 18px;
+  background-color: #ffffff;
+  color: #000000;
+  border: none;
+  border-radius: 6px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.6);
+  transition: all 0.2s;
+  z-index: 99;
+}
+
+.btn-to-top:hover {
+  background-color: #ffcc00;
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   8. RESPONSIVE DESIGN
+   ========================================================================== */
+@media (max-width: 950px) {
+  .details-section {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 850px) {
+  .cards-accordion {
+    flex-direction: column;
+    height: auto;
+  }
+  .activity-card {
+    margin-left: 0;
+    margin-top: -30px;
+    min-height: 170px;
+    flex: 1 !important;
+    padding-right: 28px;
+  }
+  .activity-card:first-child {
+    margin-top: 0;
+  }
+  .activity-card:hover .card-img-box,
+  .activity-card.active .card-img-box {
+    height: 180px;
+  }
+}
+
+@media (max-width: 768px) {
+  .landing-hero {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+  .landing-hero-title {
+    font-size: 32px;
+  }
+  .pixel-title {
+    font-size: 16px;
+  }
+  .typing-overlay {
+    top: 18px;
+    left: 18px;
+  }
+  .landing-navbar-menu {
+    gap: 12px;
+  }
+  .landing-nav-btn {
+    font-size: 9px;
+    padding: 4px 6px;
+  }
+  .heading-pixel {
+    font-size: 18px;
+  }
+  .heading-bold {
+    font-size: 20px;
+  }
+  .stats-label,
+  .stats-val {
+    font-size: 11px;
+  }
+  .activities-title {
+    font-size: 26px;
+  }
+  .blast-slogan {
+    font-size: 12px;
+  }
+}

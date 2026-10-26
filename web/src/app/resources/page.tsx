@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { getAllResources } from "@/lib/queries";
+import { ROUTES } from "@/routes";
 
 export const dynamic = "force-dynamic";
 
 const CATEGORIES = ["CAD", "Programming", "Mechanical", "Failure Log"];
 
-// Trang tạm để thử luồng analytics. Khi bản thiết kế của Minh xong thì thay file này.
 export default async function ResourcesPage({
   searchParams,
 }: {
@@ -16,6 +16,29 @@ export default async function ResourcesPage({
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-12">
+      <div className="mb-8 flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 pb-4">
+        <Link
+          href={ROUTES.HOME}
+          className="text-sm font-medium text-amber-500 hover:underline flex items-center gap-1 font-mono"
+        >
+          &larr; Back to HSGS RoboLads Home
+        </Link>
+        <div className="flex items-center gap-4 text-sm font-medium">
+          <Link
+            href={ROUTES.BLOG}
+            className="text-zinc-600 dark:text-zinc-400 hover:text-amber-500 transition-colors"
+          >
+            Blog
+          </Link>
+          <Link
+            href={ROUTES.ADMIN}
+            className="rounded-lg bg-zinc-800 px-3 py-1.5 text-xs text-white hover:bg-zinc-700 transition-colors"
+          >
+            Admin Portal &rarr;
+          </Link>
+        </div>
+      </div>
+
       <h1 className="mb-6 text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
         RoboLads Resources
       </h1>
@@ -35,7 +58,7 @@ export default async function ResourcesPage({
           </Link>
         ))}
         {(category || tag) && (
-          <Link href="/resources" className="ml-2 text-sm text-zinc-500 hover:underline">
+          <Link href={ROUTES.RESOURCES} className="ml-2 text-sm text-zinc-500 hover:underline">
             Bỏ lọc
           </Link>
         )}
@@ -54,7 +77,7 @@ export default async function ResourcesPage({
                 {item.category || "Khác"}
               </p>
               <h2 className="mt-2 text-xl font-semibold text-zinc-900 dark:text-zinc-50">
-                <Link href={`/resources/${item._id}`} className="hover:underline">
+                <Link href={ROUTES.RESOURCE_DETAIL(item._id)} className="hover:underline">
                   {item.title}
                 </Link>
               </h2>
