@@ -1,0 +1,144 @@
+###############################################################################
+# RoboLads REST API Test Suite (.http)
+#
+# Use with VS Code REST Client extension, JetBrains HTTP Client,
+# Postman, Bruno, or any RFC 7230 / RFC 2616 compliant HTTP runner.
+#
+# Runs through the complete 5-step lifecycle:
+#   1. Fetch Resource List
+#   2. Fetch Resource Detail
+#   3. POST Track View Event
+#   4. POST Track Download Event
+#   5. GET Analytics Summary (Protected - Khang)
+###############################################################################
+
+@baseUrl = http://localhost:3000
+@analyticsSecret = robolads-khang-2026
+@resourceId = 9b11369f-468e-40e4-9491-c09f76e36ccd
+
+
+### ===========================================================================
+### 1. FETCH RESOURCE LIST
+### ===========================================================================
+# Returns all resources sorted by publishedAt descending.
+# Expected Status: 200 OK
+GET {{baseUrl}}/api/resources
+Accept: application/json
+
+### 1b. Fetch Resource List with Category Filter
+# Category options: "CAD" | "Programming" | "Mechanical" | "Failure Log"
+# Expected Status: 200 OK
+GET {{baseUrl}}/api/resources?category=Programming
+Accept: application/json
+
+### 1c. Fetch Resource List with Category and Tag Filter
+# Expected Status: 200 OK
+GET {{baseUrl}}/api/resources?category=Programming&tag=FIRST%20Tech%20Challenge
+Accept: application/json
+
+
+### ===========================================================================
+### 2. FETCH RESOURCE DETAIL
+### ===========================================================================
+# Returns a single resource by its unique _id with expanded file asset URL.
+# Expected Status: 200 OK
+GET {{baseUrl}}/api/resources/{{resourceId}}
+Accept: application/json
+
+### 2b. Fetch Non-Existent Resource (Error handling verification)
+# Expected Status: 404 Not Found
+GET {{baseUrl}}/api/resources/non-existent-id-99999
+Accept: application/json
+
+
+### ===========================================================================
+### 3. POST TRACK VIEW EVENT
+### ===========================================================================
+# Called on mount of the resource detail page.
+# Note: Requires SANITY_API_TOKEN in server .env.local to persist into Sanity Lake.
+# Expected Status: 201 Created (or 500 with helpful error if write token not configured)
+POST {{baseUrl}}/api/analytics/track
+Content-Type: application/json
+
+{
+  "resourceId": "{{resourceId}}",
+  "type": "view"
+}
+
+
+### ===========================================================================
+### 4. POST TRACK DOWNLOAD EVENT
+### ===========================================================================
+# Called when the user clicks the file download button on a resource.
+# Note: Requires SANITY_API_TOKEN in server .env.local to persist into Sanity Lake.
+# Expected Status: 201 Created (or 500 with helpful error if write token not configured)
+POST {{baseUrl}}/api/analytics/track
+Content-Type: application/json
+
+{
+  "resourceId": "{{resourceId}}",
+  "type": "download"
+}
+
+### 4b. Track Event Validation Error Check (Missing resourceId)
+# Expected Status: 400 Bad Request
+POST {{baseUrl}}/api/analytics/track
+Content-Type: application/json
+
+{
+  "type": "download"
+}
+
+### 4c. Track Event Validation Error Check (Invalid type)
+# Expected Status: 400 Bad Request
+POST {{baseUrl}}/api/analytics/track
+Content-Type: application/json
+
+{
+  "resourceId": "{{resourceId}}",
+  "type": "invalid_type"
+}
+
+
+### ===========================================================================
+### 5. GET ANALYTICS SUMMARY (DASHBOARD - KHANG)
+### ===========================================================================
+# Protected endpoint returning real-time view & download counts and top 5 rankings.
+# Authenticated using x-analytics-secret header.
+# Expected Status: 200 OK
+GET {{baseUrl}}/api/analytics/summary
+x-analytics-secret: {{analyticsSecret}}
+Accept: application/json
+
+### 5b. GET Analytics Summary using Authorization Bearer Header
+# Alternative authorization format supported by the endpoint.
+# Expected Status: 200 OK
+GET {{baseUrl}}/api/analytics/summary
+Authorization: Bearer {{analyticsSecret}}
+Accept: application/json
+
+### 5c. GET Analytics Summary Unauthorized Check (Missing Secret)
+# Expected Status: 401 Unauthorized
+GET {{baseUrl}}/api/analytics/summary
+Accept: application/json
+
+### 5d. GET Analytics Summary Unauthorized Check (Invalid Secret)
+# Expected Status: 401 Unauthorized
+GET {{baseUrl}}/api/analytics/summary
+x-analytics-secret: wrong-secret-token
+Accept: application/json
+
+
+### ===========================================================================
+### OPTIONAL: DIRECT SANITY CONTENT LAKE GROQ QUERIES (CDN / NO LOCAL SERVER)
+### ===========================================================================
+# If querying Sanity directly without running Next.js:
+# Project ID: n5zz3lqj, Dataset: production, API Version: 2026-09-18
+
+### Query Sanity Directly for All Resources
+GET https://n5zz3lqj.api.sanity.io/v2026-09-18/data/query/production?query=*[_type=="resource"]|order(publishedAt%20desc){_id,title,category,tags,author,publishedAt,file{...,asset->{_id,url,originalFilename,size,extension}}}
+Accept: application/json
+
+### Query Sanity Directly for Resource Detail
+GET https://n5zz3lqj.api.sanity.io/v2026-09-18/data/query/production?query=*[_type=="resource"%26%26_id=="{{resourceId}}"][0]{_id,title,category,tags,description,author,publishedAt,file{...,asset->{_id,url,originalFilename,size,extension}}}
+Accept: application/json
