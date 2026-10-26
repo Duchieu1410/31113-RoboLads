@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1080" width="100%" height="100%" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <radialGradient id="heroCenterGlow" cx="50%" cy="50%" r="60%">
+      <stop offset="0%" stop-color="#19255a" stop-opacity="0.6" />
+      <stop offset="60%" stop-color="#0c102b" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#08081a" stop-opacity="1" />
+    </radialGradient>
+    <linearGradient id="cyberGridGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#ffcc00" stop-opacity="0.15" />
+      <stop offset="50%" stop-color="#4361ee" stop-opacity="0.1" />
+      <stop offset="100%" stop-color="#08081a" stop-opacity="0" />
+    </linearGradient>
+    <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+      <path d="M 80 0 L 0 0 0 80" fill="none" stroke="#252d5e" stroke-width="1" stroke-opacity="0.35" />
+      <circle cx="0" cy="0" r="2" fill="#ffcc00" fill-opacity="0.4" />
+    </pattern>
+  </defs>
+
+  <!-- Deep Cosmic Base -->
+  <rect width="100%" height="100%" fill="#08081a" />
+  <rect width="100%" height="100%" fill="url(#heroCenterGlow)" />
+  
+  <!-- Perspective Grid -->
+  <rect width="100%" height="100%" fill="url(#grid)" />
+  
+  <!-- Glowing Circuit Lines & Tech Nodes -->
+  <g stroke="#ffcc00" stroke-width="2" stroke-opacity="0.25" fill="none">
+    <path d="M-100,200 L400,200 L550,350 L1100,350 L1250,500 L2000,500" />
+    <path d="M100,900 L600,900 L750,750 L1400,750 L1600,550 L2000,550" />
+    <path d="M800,-100 L800,300 L950,450 L950,900" />
+  </g>
+  <g fill="#ffcc00" opacity="0.5">
+    <circle cx="400" cy="200" r="5" />
+    <circle cx="550" cy="350" r="6" />
+    <circle cx="1100" cy="350" r="5" />
+    <circle cx="750" cy="750" r="6" />
+    <circle cx="1400" cy="750" r="5" />
+  </g>
+
+  <!-- Huge Watermark Crest -->
+  <g transform="translate(1300, 320) scale(4)" opacity="0.08" stroke="#ffcc00" stroke-width="2" fill="none">
+    <polygon points="50,10 90,32 90,78 50,100 10,78 10,32" />
+    <text x="50" y="60" text-anchor="middle" font-family="'Press Start 2P', monospace" font-size="12" fill="#ffcc00">31113</text>
+  </g>
+</svg>

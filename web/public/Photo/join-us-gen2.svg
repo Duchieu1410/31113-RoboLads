@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="joinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#12163a" />
+      <stop offset="100%" stop-color="#070918" />
+    </linearGradient>
+    <linearGradient id="yellowAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffb800" />
+      <stop offset="100%" stop-color="#ffd000" />
+    </linearGradient>
+  </defs>
+
+  <rect width="100%" height="100%" fill="url(#joinGrad)" />
+
+  <!-- Diagonal Tech Stripes -->
+  <g stroke="#ffcc00" stroke-width="1.5" stroke-opacity="0.15">
+    <line x1="0" y1="0" x2="400" y2="400" />
+    <line x1="50" y1="0" x2="450" y2="400" />
+    <line x1="100" y1="0" x2="500" y2="400" />
+    <line x1="150" y1="0" x2="550" y2="400" />
+  </g>
+
+  <!-- Glowing Core Symbol -->
+  <circle cx="300" cy="170" r="70" fill="#090d29" stroke="url(#yellowAccent)" stroke-width="4" />
+  <circle cx="300" cy="170" r="50" fill="none" stroke="#4cc9f0" stroke-width="2" stroke-dasharray="6 4" />
+  
+  <!-- Robot Hand / Lightning Icon -->
+  <polygon points="300,125 315,160 295,165 310,210 280,175 300,170" fill="#ffb800" />
+
+  <!-- Text -->
+  <text x="300" y="280" text-anchor="middle" font-family="'Press Start 2P', monospace" font-size="18" fill="#ffffff" letter-spacing="1">
+    JOIN US
+  </text>
+  <text x="300" y="315" text-anchor="middle" font-family="'Inter', sans-serif" font-weight="900" font-size="16" fill="#ffb800" letter-spacing="3">
+    GENERATION 2 • 2026
+  </text>
+  <text x="300" y="345" text-anchor="middle" font-family="'Inter', sans-serif" font-size="12" fill="#8fa0ba">
+    Be part of the FTC 31113 RoboLads Journey
+  </text>
+</svg>

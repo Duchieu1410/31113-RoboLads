@@ -111,10 +111,12 @@ export default function HomePage() {
           ===================================================================== */}
       <header className="landing-navbar">
         <Link href={ROUTES.HOME} className="landing-navbar-logo">
-          <div className="w-10 h-10 rounded-lg bg-amber-400 text-black flex items-center justify-center font-bold text-xs tracking-tighter">
-            31113
-          </div>
-          <span className="landing-navbar-logo-text">ROBOLADS</span>
+          <ImageWithFallback
+            src="/Photo/logo.png"
+            alt="HSGS RoboLads Logo"
+            className="h-10 w-auto"
+            fallbackTitle="31113 ROBOLADS"
+          />
         </Link>
 
         <nav className="landing-navbar-menu">
@@ -316,7 +318,7 @@ export default function HomePage() {
             </div>
             <div className="card-img-box">
               <ImageWithFallback
-                src="/Photo/cad-robot.png"
+                src="/Photo/cad-robot.jpg"
                 alt="Thiết kế & Chế tạo robot"
                 fallbackTitle="CAD & FABRICATION"
                 fallbackIcon={<Cpu className="w-8 h-8" />}

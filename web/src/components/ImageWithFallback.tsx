@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
 interface ImageWithFallbackProps extends React.ImgHTMLAttributes<HTMLImageElement> {
   fallbackTitle?: string;
@@ -17,9 +17,38 @@ export function ImageWithFallback({
   fallbackIcon,
   ...props
 }: ImageWithFallbackProps) {
-  const [error, setError] = useState(false);
+  const [attempt, setAttempt] = useState<number>(0);
+  const [failed, setFailed] = useState(false);
 
-  if (error || !src) {
+  // Derive source candidates: tries original, then alternative common extensions, then .svg
+  const candidates = useMemo(() => {
+    if (!src || typeof src !== 'string') return [];
+    const list: string[] = [src];
+    const match = src.match(/^(.*)\.(jpg|jpeg|png|webp|svg)$/i);
+    if (match) {
+      const base = match[1];
+      const exts = ['jpg', 'png', 'webp', 'jpeg', 'svg'];
+      for (const ext of exts) {
+        const candidate = `${base}.${ext}`;
+        if (!list.includes(candidate)) {
+          list.push(candidate);
+        }
+      }
+    }
+    return list;
+  }, [src]);
+
+  const currentSrc = candidates[attempt] || undefined;
+
+  const handleError = () => {
+    if (attempt + 1 < candidates.length) {
+      setAttempt((prev) => prev + 1);
+    } else {
+      setFailed(true);
+    }
+  };
+
+  if (failed || !currentSrc) {
     return (
       <div
         className={`flex flex-col items-center justify-center bg-gradient-to-br from-slate-900 to-indigo-950/80 p-6 text-center border border-white/10 ${className}`}
@@ -46,10 +75,10 @@ export function ImageWithFallback({
 
   return (
     <img
-      src={src}
+      src={currentSrc}
       alt={alt}
       className={className}
-      onError={() => setError(true)}
+      onError={handleError}
       {...props}
     />
   );

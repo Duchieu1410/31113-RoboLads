@@ -51,12 +51,14 @@
   gap: 12px;
   text-decoration: none;
   cursor: pointer;
+  flex-shrink: 0;
 }
 
 .landing-navbar-logo img {
   height: 42px;
-  width: auto;
+  width: 42px;
   object-fit: contain;
+  flex-shrink: 0;
 }
 
 .landing-navbar-logo-text {

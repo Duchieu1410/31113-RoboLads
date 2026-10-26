@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0c112e" />
+      <stop offset="50%" stop-color="#141a45" />
+      <stop offset="100%" stop-color="#080a1c" />
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ffb800" />
+      <stop offset="100%" stop-color="#ff3366" />
+    </linearGradient>
+  </defs>
+
+  <rect width="100%" height="100%" fill="url(#bgGrad)" />
+
+  <!-- Grid overlay -->
+  <g stroke="#ffffff" stroke-opacity="0.04" stroke-width="1">
+    <line x1="0" y1="135" x2="1200" y2="135" />
+    <line x1="0" y1="270" x2="1200" y2="270" />
+    <line x1="0" y1="405" x2="1200" y2="405" />
+    <line x1="0" y1="540" x2="1200" y2="540" />
+    <line x1="240" y1="0" x2="240" y2="675" />
+    <line x1="480" y1="0" x2="480" y2="675" />
+    <line x1="720" y1="0" x2="720" y2="675" />
+    <line x1="960" y1="0" x2="960" y2="675" />
+  </g>
+
+  <!-- Stylized Robotics Engineering Team silhouettes & robot -->
+  <g transform="translate(600, 360)">
+    <!-- Central FTC Robot Silhouette -->
+    <rect x="-140" y="-40" width="280" height="180" rx="12" fill="#080c24" stroke="#ffcc00" stroke-width="3" />
+    <!-- Mecanum Wheels -->
+    <rect x="-165" y="-30" width="25" height="70" rx="4" fill="#ffb800" />
+    <rect x="-165" y="70" width="25" height="70" rx="4" fill="#ffb800" />
+    <rect x="140" y="-30" width="25" height="70" rx="4" fill="#ffb800" />
+    <rect x="140" y="70" width="25" height="70" rx="4" fill="#ffb800" />
+    <!-- Linear slide tower / Intake -->
+    <rect x="-40" y="-180" width="80" height="150" rx="6" fill="#12183e" stroke="#4895ef" stroke-width="2" />
+    <polygon points="0,-220 -30,-180 30,-180" fill="#ffcc00" />
+    <circle cx="0" cy="-110" r="16" fill="#ffcc00" opacity="0.8" />
+  </g>
+
+  <!-- Team Members Icons / Avatars -->
+  <g fill="#212a5e" stroke="#ffcc00" stroke-width="2" opacity="0.9">
+    <circle cx="280" cy="380" r="38" />
+    <circle cx="400" cy="350" r="42" />
+    <circle cx="800" cy="350" r="42" />
+    <circle cx="920" cy="380" r="38" />
+  </g>
+
+  <!-- HUD telemetry card in corner -->
+  <rect x="50" y="490" width="360" height="135" rx="10" fill="#060814" stroke="#ffcc00" stroke-width="1.5" opacity="0.95" />
+  <text x="75" y="525" font-family="'Press Start 2P', monospace" font-size="12" fill="#ffcc00">HSGS ROBOLADS</text>
+  <text x="75" y="555" font-family="'Inter', sans-serif" font-size="14" font-weight="700" fill="#ffffff">FIRST Tech Challenge #31113</text>
+  <text x="75" y="580" font-family="'Inter', sans-serif" font-size="12" fill="#8fa0ba">Official Team Photo Placeholder</text>
+  <text x="75" y="605" font-family="'Inter', sans-serif" font-size="11" fill="#4ade80">● Status: READY TO BLAST 2026</text>
+</svg>

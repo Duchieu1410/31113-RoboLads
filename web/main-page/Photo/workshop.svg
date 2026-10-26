@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 300" width="100%" height="100%">
+  <defs>
+    <linearGradient id="wsBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141829" />
+      <stop offset="100%" stop-color="#080b18" />
+    </linearGradient>
+  </defs>
+  <rect width="100%" height="100%" fill="url(#wsBg)" />
+
+  <!-- Breadboard & Hardware Elements -->
+  <g transform="translate(140, 60)">
+    <!-- Circuit Microchip -->
+    <rect x="50" y="30" width="120" height="90" rx="8" fill="#1b223d" stroke="#ffcc00" stroke-width="2" />
+    <circle cx="110" cy="75" r="20" fill="#ffb800" opacity="0.3" />
+    <text x="110" y="80" text-anchor="middle" font-family="'Press Start 2P', monospace" font-size="9" fill="#ffcc00">REV</text>
+    
+    <!-- Microcontroller pins -->
+    <g fill="#ffcc00">
+      <rect x="35" y="45" width="15" height="4" /><rect x="35" y="60" width="15" height="4" />
+      <rect x="35" y="75" width="15" height="4" /><rect x="35" y="90" width="15" height="4" />
+      <rect x="170" y="45" width="15" height="4" /><rect x="170" y="60" width="15" height="4" />
+      <rect x="170" y="75" width="15" height="4" /><rect x="170" y="90" width="15" height="4" />
+    </g>
+  </g>
+
+  <!-- Oscilloscope Sine Wave -->
+  <path d="M50,210 Q 125,170 200,210 T 350,210 T 450,210" fill="none" stroke="#4ade80" stroke-width="2.5" />
+  <circle cx="200" cy="210" r="4" fill="#4ade80" />
+  <circle cx="350" cy="210" r="4" fill="#4ade80" />
+
+  <text x="250" y="270" text-anchor="middle" font-family="'Inter', sans-serif" font-weight="900" font-size="13" fill="#ffffff" letter-spacing="2">
+    WORKSHOP &amp; HARDWARE LAB
+  </text>
+</svg>
