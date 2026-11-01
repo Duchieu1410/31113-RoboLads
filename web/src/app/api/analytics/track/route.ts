@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeClient } from "@/lib/sanity";
+import { sanityClient, writeClient } from "@/lib/sanity";
 
 export const dynamic = "force-dynamic";
 
@@ -62,6 +62,20 @@ export async function POST(request: NextRequest) {
     }
 
     const trimmedResourceId = resourceId.trim();
+
+    // Chỉ ghi event cho resource thật, tránh rác trong analytics.
+    const exists = await sanityClient
+      .withConfig({ useCdn: false })
+      .fetch<number>(
+        'count(*[_type == "resource" && _id == $id])',
+        { id: trimmedResourceId } as any
+      );
+    if (!exists) {
+      return NextResponse.json(
+        { error: `Resource '${trimmedResourceId}' không tồn tại` },
+        { status: 404 }
+      );
+    }
 
     // Create the analyticsEvent document in Sanity Content Lake
     const event = await writeClient.create({

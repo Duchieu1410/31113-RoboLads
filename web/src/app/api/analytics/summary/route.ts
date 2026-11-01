@@ -9,10 +9,11 @@ export const dynamic = "force-dynamic";
  * Checks x-analytics-secret, x-secret-key, x-api-key, or Authorization Bearer header.
  */
 function verifySecretKey(request: NextRequest): boolean {
-  const configuredSecret =
-    process.env.ANALYTICS_SECRET_KEY ||
-    process.env.INTERNAL_DASHBOARD_SECRET ||
-    "robolads-khang-2026";
+  const configuredSecret = process.env.ANALYTICS_SECRET_KEY || process.env.INTERNAL_DASHBOARD_SECRET;
+  if (!configuredSecret) {
+    // Không có fallback: thiếu cấu hình thì từ chối hết, tránh lộ key mặc định trong source.
+    return false;
+  }
 
   const headerKey =
     request.headers.get("x-analytics-secret") ||
@@ -20,11 +21,7 @@ function verifySecretKey(request: NextRequest): boolean {
     request.headers.get("x-api-key") ||
     request.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
 
-  if (!headerKey) {
-    return false;
-  }
-
-  return headerKey === configuredSecret;
+  return !!headerKey && headerKey === configuredSecret;
 }
 
 /**

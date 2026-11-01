@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
-import { writeClient } from "@/lib/sanity";
+import { sanityClient, writeClient } from "@/lib/sanity";
 import { ALL_RESOURCES_QUERY, type Resource } from "@/lib/queries";
 import { fileField, parseResourceForm, uploadResourceFile } from "@/lib/adminResources";
 
@@ -17,10 +17,9 @@ const unauthorized = () =>
 export async function GET() {
   if (!(await getSession())) return unauthorized();
   try {
-    const data = await writeClient.fetch<Resource[]>(ALL_RESOURCES_QUERY, {
-      category: null,
-      tag: null,
-    } as any);
+    const data = await sanityClient
+      .withConfig({ useCdn: false })
+      .fetch<Resource[]>(ALL_RESOURCES_QUERY, { category: null, tag: null } as any);
     return NextResponse.json({ success: true, count: data?.length ?? 0, data: data ?? [] });
   } catch (error: any) {
     console.error("[/api/admin/resources GET]", error);
