@@ -20,9 +20,9 @@ export function parseResourceForm(form: FormData) {
   const file = fileEntry instanceof File && fileEntry.size > 0 ? fileEntry : null;
 
   const errors: string[] = [];
-  if (!title) errors.push("Tiêu đề không được để trống");
-  if (!(CATEGORIES as readonly string[]).includes(category)) errors.push("Chuyên mục không hợp lệ");
-  if (file && file.size > MAX_FILE_BYTES) errors.push("File quá lớn (tối đa 100MB)");
+  if (!title) errors.push("Title cannot be empty");
+  if (!(CATEGORIES as readonly string[]).includes(category)) errors.push("Invalid category selected");
+  if (file && file.size > MAX_FILE_BYTES) errors.push("File exceeds 100MB size limit");
 
   return {
     errors,

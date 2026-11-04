@@ -241,12 +241,16 @@ export type AllSanitySchemaTypes =
   | SanityImageAsset
   | Geopoint;
 
-// Source: ../web/src/app/[slug]/page.tsx
+// Source: ../web/src/app/blog/[slug]/page.tsx
 // Variable: POST_QUERY
-// Query: *[_type == "post" && slug.current == $slug][0]{ _id, title, body }
+// Query: *[_type == "post" && slug.current == $slug][0] {    _id,    title,    author,    category,    tags,    excerpt,    body[] {      ...,      asset-> {        _id,        url,        originalFilename      }    },    _createdAt  }
 export type POST_QUERY_RESULT = {
   _id: string;
   title: string | null;
+  author: null;
+  category: null;
+  tags: null;
+  excerpt: null;
   body: Array<{
     children?: Array<{
       marks?: Array<string>;
@@ -264,21 +268,27 @@ export type POST_QUERY_RESULT = {
     level?: number;
     _type: "block";
     _key: string;
+    asset: null;
   }> | null;
+  _createdAt: string;
 } | null;
 
-// Source: ../web/src/app/page.tsx
+// Source: ../web/src/app/blog/page.tsx
 // Variable: POSTS_QUERY
-// Query: *[_type == "post" && defined(slug.current)] | order(_createdAt desc){ _id, title, slug }
+// Query: *[_type == "post" && defined(slug.current)] | order(_createdAt desc){ _id, title, slug, category, tags, excerpt, _createdAt }
 export type POSTS_QUERY_RESULT = Array<{
   _id: string;
   title: string | null;
   slug: Slug | null;
+  category: null;
+  tags: null;
+  excerpt: null;
+  _createdAt: string;
 }>;
 
 // Source: ../web/src/lib/queries.ts
 // Variable: ALL_RESOURCES_QUERY
-// Query: *[_type == "resource"     && (!defined($category) || category == $category)     && (!defined($tag) || $tag in tags)  ] | order(publishedAt desc) {    _id,    _type,    _createdAt,    _updatedAt,    title,    category,    tags,    description,    author,    publishedAt,    file {      ...,      asset-> {        _id,        url,        originalFilename,        extension,        mimeType,        size      }    }  }
+// Query: *[_type == "resource"     && (!defined($category) || category == $category)     && (!defined($tag) || $tag in tags)  ] | order(publishedAt desc) {    _id,    _type,    _createdAt,    _updatedAt,    title,    category,    tags,    description[] {      ...,      _type == "image" => {        ...,        asset-> {          _id,          url        }      }    },    author,    publishedAt,    file {      ...,      asset-> {        _id,        url,        originalFilename,        extension,        mimeType,        size      }    }  }
 export type ALL_RESOURCES_QUERY_RESULT = Array<{
   _id: string;
   _type: "resource";
@@ -323,7 +333,7 @@ export type ALL_RESOURCES_QUERY_RESULT = Array<{
 
 // Source: ../web/src/lib/queries.ts
 // Variable: RESOURCE_BY_ID_QUERY
-// Query: *[_type == "resource" && _id == $id][0] {    _id,    _type,    _createdAt,    _updatedAt,    title,    category,    tags,    description,    author,    publishedAt,    file {      ...,      asset-> {        _id,        url,        originalFilename,        extension,        mimeType,        size      }    }  }
+// Query: *[_type == "resource" && _id == $id][0] {    _id,    _type,    _createdAt,    _updatedAt,    title,    category,    tags,    description[] {      ...,      _type == "image" => {        ...,        asset-> {          _id,          url        }      }    },    author,    publishedAt,    file {      ...,      asset-> {        _id,        url,        originalFilename,        extension,        mimeType,        size      }    }  }
 export type RESOURCE_BY_ID_QUERY_RESULT = {
   _id: string;
   _type: "resource";
@@ -367,6 +377,77 @@ export type RESOURCE_BY_ID_QUERY_RESULT = {
 } | null;
 
 // Source: ../web/src/lib/queries.ts
+// Variable: ALL_POSTS_QUERY
+// Query: *[_type == "post"] | order(_createdAt desc) {    _id,    _type,    _createdAt,    _updatedAt,    title,    slug,    excerpt,    author,    category,    tags,    publishedAt,    body  }
+export type ALL_POSTS_QUERY_RESULT = Array<{
+  _id: string;
+  _type: "post";
+  _createdAt: string;
+  _updatedAt: string;
+  title: string | null;
+  slug: Slug | null;
+  excerpt: null;
+  author: null;
+  category: null;
+  tags: null;
+  publishedAt: null;
+  body: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }> | null;
+}>;
+
+// Source: ../web/src/lib/queries.ts
+// Variable: POST_BY_ID_QUERY
+// Query: *[_type == "post" && _id == $id][0] {    _id,    _type,    _createdAt,    _updatedAt,    title,    slug,    excerpt,    author,    category,    tags,    publishedAt,    body[] {      ...,      asset-> {        _id,        url,        originalFilename      }    }  }
+export type POST_BY_ID_QUERY_RESULT = {
+  _id: string;
+  _type: "post";
+  _createdAt: string;
+  _updatedAt: string;
+  title: string | null;
+  slug: Slug | null;
+  excerpt: null;
+  author: null;
+  category: null;
+  tags: null;
+  publishedAt: null;
+  body: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "blockquote" | "h1" | "h2" | "h3" | "h4" | "h5" | "h6" | "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+    asset: null;
+  }> | null;
+} | null;
+
+// Source: ../web/src/lib/queries.ts
 // Variable: ANALYTICS_SUMMARY_QUERY
 // Query: {  "totalViews": count(*[_type == "analyticsEvent" && type == "view"]),  "totalDownloads": count(*[_type == "analyticsEvent" && type == "download"]),  "topViewed": *[_type == "resource"] {    "resourceId": _id,    title,    "views": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "view"])  } | order(views desc)[0...5],  "topDownloaded": *[_type == "resource"] {    "resourceId": _id,    title,    "downloads": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "download"])  } | order(downloads desc)[0...5],  "byResource": *[_type == "resource"] {    "resourceId": _id,    title,    "views": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "view"]),    "downloads": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "download"])  }}
 export type ANALYTICS_SUMMARY_QUERY_RESULT = {
@@ -393,10 +474,12 @@ export type ANALYTICS_SUMMARY_QUERY_RESULT = {
 // Query TypeMap
 declare global {
   interface SanityQueries {
-    '*[_type == "post" && slug.current == $slug][0]{ _id, title, body }': POST_QUERY_RESULT;
-    '*[_type == "post" && defined(slug.current)] | order(_createdAt desc){ _id, title, slug }': POSTS_QUERY_RESULT;
-    '\n  *[_type == "resource" \n    && (!defined($category) || category == $category) \n    && (!defined($tag) || $tag in tags)\n  ] | order(publishedAt desc) {\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    title,\n    category,\n    tags,\n    description,\n    author,\n    publishedAt,\n    file {\n      ...,\n      asset-> {\n        _id,\n        url,\n        originalFilename,\n        extension,\n        mimeType,\n        size\n      }\n    }\n  }\n': ALL_RESOURCES_QUERY_RESULT;
-    '\n  *[_type == "resource" && _id == $id][0] {\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    title,\n    category,\n    tags,\n    description,\n    author,\n    publishedAt,\n    file {\n      ...,\n      asset-> {\n        _id,\n        url,\n        originalFilename,\n        extension,\n        mimeType,\n        size\n      }\n    }\n  }\n': RESOURCE_BY_ID_QUERY_RESULT;
+    '\n  *[_type == "post" && slug.current == $slug][0] {\n    _id,\n    title,\n    author,\n    category,\n    tags,\n    excerpt,\n    body[] {\n      ...,\n      asset-> {\n        _id,\n        url,\n        originalFilename\n      }\n    },\n    _createdAt\n  }\n': POST_QUERY_RESULT;
+    '*[_type == "post" && defined(slug.current)] | order(_createdAt desc){ _id, title, slug, category, tags, excerpt, _createdAt }': POSTS_QUERY_RESULT;
+    '\n  *[_type == "resource" \n    && (!defined($category) || category == $category) \n    && (!defined($tag) || $tag in tags)\n  ] | order(publishedAt desc) {\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    title,\n    category,\n    tags,\n    description[] {\n      ...,\n      _type == "image" => {\n        ...,\n        asset-> {\n          _id,\n          url\n        }\n      }\n    },\n    author,\n    publishedAt,\n    file {\n      ...,\n      asset-> {\n        _id,\n        url,\n        originalFilename,\n        extension,\n        mimeType,\n        size\n      }\n    }\n  }\n': ALL_RESOURCES_QUERY_RESULT;
+    '\n  *[_type == "resource" && _id == $id][0] {\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    title,\n    category,\n    tags,\n    description[] {\n      ...,\n      _type == "image" => {\n        ...,\n        asset-> {\n          _id,\n          url\n        }\n      }\n    },\n    author,\n    publishedAt,\n    file {\n      ...,\n      asset-> {\n        _id,\n        url,\n        originalFilename,\n        extension,\n        mimeType,\n        size\n      }\n    }\n  }\n': RESOURCE_BY_ID_QUERY_RESULT;
+    '\n  *[_type == "post"] | order(_createdAt desc) {\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    title,\n    slug,\n    excerpt,\n    author,\n    category,\n    tags,\n    publishedAt,\n    body\n  }\n': ALL_POSTS_QUERY_RESULT;
+    '\n  *[_type == "post" && _id == $id][0] {\n    _id,\n    _type,\n    _createdAt,\n    _updatedAt,\n    title,\n    slug,\n    excerpt,\n    author,\n    category,\n    tags,\n    publishedAt,\n    body[] {\n      ...,\n      asset-> {\n        _id,\n        url,\n        originalFilename\n      }\n    }\n  }\n': POST_BY_ID_QUERY_RESULT;
     '{\n  "totalViews": count(*[_type == "analyticsEvent" && type == "view"]),\n  "totalDownloads": count(*[_type == "analyticsEvent" && type == "download"]),\n  "topViewed": *[_type == "resource"] {\n    "resourceId": _id,\n    title,\n    "views": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "view"])\n  } | order(views desc)[0...5],\n  "topDownloaded": *[_type == "resource"] {\n    "resourceId": _id,\n    title,\n    "downloads": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "download"])\n  } | order(downloads desc)[0...5],\n  "byResource": *[_type == "resource"] {\n    "resourceId": _id,\n    title,\n    "views": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "view"]),\n    "downloads": count(*[_type == "analyticsEvent" && resourceId._ref == ^._id && type == "download"])\n  }\n}': ANALYTICS_SUMMARY_QUERY_RESULT;
   }
 }

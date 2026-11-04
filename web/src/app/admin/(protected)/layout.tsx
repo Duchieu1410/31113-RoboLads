@@ -9,5 +9,5 @@ export const dynamic = "force-dynamic";
 export default async function ProtectedAdminLayout({ children }: { children: ReactNode }) {
   const session = await getSession();
   if (!session) redirect("/admin/login");
-  return <>{children}</>;
+  return <div className="admin-root min-h-screen bg-[#08081a] text-white">{children}</div>;
 }

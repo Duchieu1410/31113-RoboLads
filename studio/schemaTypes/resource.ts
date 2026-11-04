@@ -34,7 +34,56 @@ export const resource = defineType({
       name: 'description',
       title: 'Description',
       type: 'array',
-      of: [defineArrayMember({ type: 'block' })],
+      of: [
+        defineArrayMember({ type: 'block' }),
+        defineArrayMember({
+          type: 'image',
+          options: { hotspot: true },
+          fields: [
+            defineField({
+              name: 'alt',
+              title: 'Alt Text',
+              type: 'string',
+            }),
+            defineField({
+              name: 'caption',
+              title: 'Caption',
+              type: 'string',
+            }),
+          ],
+        }),
+        defineArrayMember({
+          name: 'callout',
+          title: 'Info Box / Callout',
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'tone',
+              title: 'Tone',
+              type: 'string',
+              options: {
+                list: [
+                  { title: 'Important', value: 'important' },
+                  { title: 'Tip', value: 'tip' },
+                  { title: 'Warning', value: 'warning' },
+                  { title: 'Info', value: 'info' },
+                ],
+              },
+            }),
+            defineField({
+              name: 'title',
+              title: 'Box Header',
+              type: 'string',
+            }),
+            defineField({
+              name: 'text',
+              title: 'Box Text',
+              type: 'text',
+              rows: 3,
+            }),
+          ],
+        }),
+      ],
     }),
     defineField({
       name: 'file',

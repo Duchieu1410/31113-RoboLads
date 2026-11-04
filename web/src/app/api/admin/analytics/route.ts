@@ -12,7 +12,7 @@ export const dynamic = "force-dynamic";
  */
 export async function GET() {
   if (!(await getSession())) {
-    return NextResponse.json({ success: false, error: "Chưa đăng nhập" }, { status: 401 });
+    return NextResponse.json({ success: false, error: "Unauthorized: Admin session required" }, { status: 401 });
   }
   try {
     const data = await getAnalyticsSummary();
@@ -20,7 +20,7 @@ export async function GET() {
   } catch (error: any) {
     console.error("[/api/admin/analytics]", error);
     return NextResponse.json(
-      { success: false, error: "Không tải được analytics", details: error?.message },
+      { success: false, error: "Failed to fetch analytics summary", details: error?.message },
       { status: 500 }
     );
   }

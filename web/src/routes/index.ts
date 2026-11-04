@@ -8,8 +8,13 @@
 export const ROUTES = {
   // Public Client Routes
   HOME: "/",
+  CAD: "/cad",
   RESOURCES: "/resources",
+  RESOURCES_PORTFOLIOS: "/resources/portfolios",
   RESOURCE_DETAIL: (id: string) => `/resources/${encodeURIComponent(id)}`,
+  PORTFOLIOS: "/portfolios",
+  PORTFOLIO_DETAIL: (id: string) => `/portfolios/${encodeURIComponent(id)}`,
+  RESOURCES_PORTFOLIO_DETAIL: (id: string) => `/resources/portfolios/${encodeURIComponent(id)}`,
   BLOG: "/blog",
   BLOG_POST: (slug: string) => `/blog/${encodeURIComponent(slug)}`,
 
@@ -18,24 +23,41 @@ export const ROUTES = {
     HERO: "#hero",
     ABOUT: "#about-target",
     DETAILS: "#details-target",
+    ROBOT: "#robot-target",
     ACTIVITIES: "#activities-target",
   },
 
   // Admin & Management Portal
   ADMIN: "/admin",
   ADMIN_LOGIN: "/admin/login",
+  ADMIN_POST_NEW: "/admin/posts/new",
+  ADMIN_POST_EDIT: (id: string) => `/admin/posts/${encodeURIComponent(id)}/edit`,
+  ADMIN_RESOURCE_NEW: "/admin/resources/new",
+  ADMIN_RESOURCE_EDIT: (id: string) => `/admin/resources/${encodeURIComponent(id)}/edit`,
+  ADMIN_PORTFOLIO_NEW: "/admin/portfolios/new",
+  ADMIN_PORTFOLIO_EDIT: (id: string) => `/admin/portfolios/${encodeURIComponent(id)}/edit`,
 
   // REST API Endpoints
   API: {
+    POSTS: "/api/posts",
     RESOURCES: "/api/resources",
     RESOURCE_BY_ID: (id: string) => `/api/resources/${encodeURIComponent(id)}`,
+    PORTFOLIOS: "/api/portfolios",
+    PORTFOLIO_BY_ID: (id: string) => `/api/portfolios/${encodeURIComponent(id)}`,
     ANALYTICS_TRACK: "/api/analytics/track",
     ANALYTICS_SUMMARY: "/api/analytics/summary",
     ADMIN_LOGIN: "/api/admin/login",
     ADMIN_LOGOUT: "/api/admin/logout",
     ADMIN_RESOURCES: "/api/admin/resources",
     ADMIN_RESOURCE_BY_ID: (id: string) => `/api/admin/resources/${encodeURIComponent(id)}`,
+    ADMIN_PORTFOLIOS: "/api/admin/portfolios",
+    ADMIN_PORTFOLIO_BY_ID: (id: string) => `/api/admin/portfolios/${encodeURIComponent(id)}`,
+    ADMIN_PORTFOLIO_UPLOAD: "/api/admin/portfolios/upload",
     ADMIN_ANALYTICS: "/api/admin/analytics",
+    ADMIN_POSTS: "/api/admin/posts",
+    ADMIN_POST_BY_ID: (id: string) => `/api/admin/posts/${encodeURIComponent(id)}`,
+    ADMIN_UPLOAD_IMAGE: "/api/admin/upload-image",
+    ADMIN_UPLOAD_FILE: "/api/admin/upload-file",
   },
 } as const;
 
@@ -59,16 +81,15 @@ export const MAIN_NAV_ITEMS: NavItem[] = [
     isAnchor: true,
   },
   {
-    label: "FTC TEAM",
-    href: "/#details-target",
-    description: "Our mission, purpose, and team profile",
-    isAnchor: true,
-  },
-  {
     label: "WHAT WE DO",
     href: "/#activities-target",
     description: "CAD, workshop, community outreach, and competitions",
     isAnchor: true,
+  },
+  {
+    label: "CAD LAB",
+    href: "/cad",
+    description: "Full-assembly 3D CAD inspection and subsystem breakdown",
   },
   {
     label: "RESOURCES",
@@ -80,12 +101,6 @@ export const MAIN_NAV_ITEMS: NavItem[] = [
     href: "/blog",
     description: "News and technical updates from the team",
   },
-  {
-    label: "ADMIN",
-    href: "/admin",
-    description: "Protected portal for resource management and analytics",
-    badge: "Admin",
-  },
 ];
 
 /**
@@ -96,6 +111,7 @@ export const ROUTE_CATALOG = [
     category: "Public Pages",
     routes: [
       { name: "Home Landing Page", path: ROUTES.HOME, description: "Official HSGS RoboLads landing page" },
+      { name: "3D CAD Lab Workstation", path: ROUTES.CAD, description: "Full interactive 3D assembly and Onshape CAD model viewer" },
       { name: "Resources Catalog", path: ROUTES.RESOURCES, description: "Filterable engineering resources and CAD files" },
       { name: "Blog & Updates", path: ROUTES.BLOG, description: "Announcements and build logs powered by Sanity" },
     ],

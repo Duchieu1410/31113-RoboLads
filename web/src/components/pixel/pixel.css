@@ -1,0 +1,631 @@
+/*
+ * Pixel components. Layer: tokens (styles/pixel-tokens.css) -> THIS FILE -> Tailwind utilities.
+ * Everything is in @layer components so Tailwind utilities can still override it.
+ * Rules: no raw hex, spacing in --px multiples, zero border-radius.
+ * Forced-state selectors ([data-force]) exist only so /dev/pixel can show hover/active/focus.
+ */
+@layer components {
+  /* ---------- shared ---------- */
+  .px-text {
+    text-shadow: var(--shadow-text);
+  }
+
+  .px-panel,
+  .px-btn,
+  .px-slot,
+  .px-tip__bubble,
+  .px-toast,
+  .px-xp,
+  .px-frame {
+    border-radius: 0;
+    image-rendering: pixelated;
+  }
+
+  /* ---------- PixelPanel ---------- */
+  .px-panel {
+    position: relative;
+    padding: var(--space-6);
+    color: var(--ink);
+    text-shadow: var(--shadow-text);
+    background-color: var(--stone-700);
+    background-image: var(--tex-stone);
+    background-size: var(--tex-size) var(--tex-size);
+    box-shadow:
+      inset var(--px) var(--px) 0 var(--bevel-light),
+      inset calc(var(--px) * -1) calc(var(--px) * -1) 0 var(--bevel-dark),
+      0 0 0 var(--px) var(--outline);
+  }
+  .px-panel--dirt {
+    background-color: var(--dirt);
+    background-image: var(--tex-dirt);
+  }
+  .px-panel--night {
+    background-color: var(--night-panel);
+    background-image: var(--tex-deepslate);
+    background-blend-mode: normal;
+  }
+  .px-panel--parchment {
+    /* long reading: flat surface, no texture, dark ink */
+    background-color: var(--parchment);
+    background-image: none;
+    color: var(--ink-dark);
+    text-shadow: none;
+  }
+  .px-panel--bedrock {
+    background-color: var(--bedrock);
+    background-image: var(--tex-bedrock);
+  }
+  .px-panel--rivets::before {
+    content: '';
+    position: absolute;
+    inset: var(--space-2);
+    pointer-events: none;
+    background:
+      linear-gradient(var(--stone-300), var(--stone-300)) top left / var(--space-2) var(--space-2) no-repeat,
+      linear-gradient(var(--stone-300), var(--stone-300)) top right / var(--space-2) var(--space-2) no-repeat,
+      linear-gradient(var(--stone-300), var(--stone-300)) bottom left / var(--space-2) var(--space-2) no-repeat,
+      linear-gradient(var(--stone-300), var(--stone-300)) bottom right / var(--space-2) var(--space-2) no-repeat;
+  }
+
+  /* ---------- PixelButton ---------- */
+  .px-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: var(--space-12);
+    padding: var(--space-3) var(--space-6);
+    font-family: var(--font-display);
+    font-size: 16px;
+    line-height: 1.25;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--ink);
+    text-shadow: var(--shadow-text);
+    background-color: var(--stone-700);
+    background-image: var(--tex-stone);
+    background-size: var(--tex-size) var(--tex-size);
+    border: 0;
+    cursor: pointer;
+    user-select: none;
+    box-shadow:
+      inset var(--px) var(--px) 0 var(--bevel-light),
+      inset calc(var(--px) * -1) calc(var(--px) * -1) 0 var(--bevel-dark),
+      0 0 0 var(--px) var(--outline);
+    transition: transform var(--press-dur) steps(1);
+  }
+  .px-btn--primary {
+    background-color: var(--gold);
+    background-image: none;
+    color: var(--ink-dark);
+    text-shadow: none;
+  }
+  .px-btn--danger {
+    background-color: var(--redstone-dark);
+    background-image: none;
+  }
+  .px-btn--half {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  .px-btn:hover,
+  .px-btn[data-force='hover'] {
+    /* gold on stone-500 fails 4.5:1, so the body keeps its color and the bevel highlight brightens instead */
+    color: var(--gold);
+    box-shadow:
+      inset var(--px) var(--px) 0 var(--bevel-light-strong),
+      inset calc(var(--px) * -1) calc(var(--px) * -1) 0 var(--bevel-dark),
+      0 0 0 var(--px) var(--outline);
+    filter: brightness(1.1);
+  }
+  .px-btn--primary:hover,
+  .px-btn--primary[data-force='hover'] {
+    background-color: #fde047;
+    color: #0a0e17;
+    text-shadow: none;
+    box-shadow:
+      inset var(--px) var(--px) 0 #ffffff,
+      inset calc(var(--px) * -1) calc(var(--px) * -1) 0 #ca8a04,
+      0 0 0 var(--px) var(--outline);
+    filter: none;
+  }
+  .px-btn--danger:hover,
+  .px-btn--danger[data-force='hover'] {
+    background-color: var(--redstone);
+    color: var(--ink);
+  }
+  .px-btn:active,
+  .px-btn[data-force='active'] {
+    transform: translateY(var(--px));
+    box-shadow:
+      inset calc(var(--px) * -1) calc(var(--px) * -1) 0 var(--bevel-light),
+      inset var(--px) var(--px) 0 var(--bevel-dark),
+      0 0 0 var(--px) var(--outline);
+  }
+  .px-btn:focus-visible,
+  .px-btn[data-force='focus'],
+  .px-slot:focus-visible,
+  .px-slot[data-force='focus'] {
+    outline: var(--px) solid var(--diamond);
+    outline-offset: calc(var(--px) * 2);
+  }
+  .px-btn[aria-disabled='true'],
+  .px-btn:disabled {
+    cursor: not-allowed;
+    background-color: var(--stone-900);
+    background-image: none;
+    color: var(--stone-300);
+    text-shadow: none;
+    transform: none;
+    box-shadow:
+      inset var(--px) var(--px) 0 var(--bevel-dark),
+      0 0 0 var(--px) var(--outline);
+  }
+
+  /* ---------- Slot ---------- */
+  .px-slot {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--slot);
+    height: var(--slot);
+    padding: 0;
+    color: var(--ink);
+    font-family: var(--font-display);
+    background-color: var(--bedrock);
+    border: 0;
+    /* inverse bevel: dark top-left, light bottom-right = recessed */
+    box-shadow:
+      inset var(--px) var(--px) 0 var(--bevel-dark),
+      inset calc(var(--px) * -1) calc(var(--px) * -1) 0 var(--bevel-light),
+      0 0 0 var(--px) var(--outline);
+  }
+  button.px-slot {
+    cursor: pointer;
+  }
+  button.px-slot:hover,
+  .px-slot[data-force='hover'] {
+    background-color: var(--stone-900);
+  }
+  button.px-slot:active,
+  .px-slot[data-force='active'] {
+    transform: translateY(var(--px));
+  }
+  .px-slot--selected {
+    outline: var(--px) solid var(--ink);
+    outline-offset: 0;
+    box-shadow:
+      inset var(--px) var(--px) 0 var(--bevel-dark),
+      inset calc(var(--px) * -1) calc(var(--px) * -1) 0 var(--bevel-light),
+      0 0 0 calc(var(--px) * 2) var(--outline);
+  }
+  .px-slot--selected:focus-visible {
+    outline-color: var(--ink);
+    box-shadow:
+      inset var(--px) var(--px) 0 var(--bevel-dark),
+      inset calc(var(--px) * -1) calc(var(--px) * -1) 0 var(--bevel-light),
+      0 0 0 calc(var(--px) * 2) var(--diamond);
+  }
+  .px-slot[aria-disabled='true'] {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  .px-slot__count {
+    position: absolute;
+    right: var(--space-1);
+    bottom: 0;
+    font-size: 16px;
+    line-height: 1;
+    text-shadow: var(--shadow-text);
+    pointer-events: none;
+  }
+  .px-icon {
+    display: block;
+    shape-rendering: crispEdges;
+    image-rendering: pixelated;
+  }
+
+  /* ---------- Tooltip ---------- */
+  .px-tip {
+    position: relative;
+    display: inline-flex;
+  }
+  .px-tip__bubble {
+    position: absolute;
+    left: 0;
+    z-index: 50;
+    width: max-content;
+    max-width: calc(var(--px) * 72);
+    padding: var(--space-2) var(--space-3);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--ink);
+    text-shadow: var(--shadow-text);
+    background: var(--tooltip-bg);
+    box-shadow:
+      0 0 0 2px var(--tooltip-border),
+      0 0 0 var(--px) var(--outline);
+    pointer-events: none;
+    text-align: left;
+  }
+  .px-tip__bubble[data-side='top'] {
+    bottom: calc(100% + var(--space-3));
+  }
+  .px-tip__bubble[data-side='bottom'] {
+    top: calc(100% + var(--space-3));
+  }
+  .px-tip__title {
+    display: block;
+    font-family: var(--font-heading);
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  /* ---------- Toast ---------- */
+  .px-toast-region {
+    position: fixed;
+    top: 88px;
+    right: var(--space-4);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    width: min(calc(var(--px) * 88), calc(100vw - var(--space-8)));
+    pointer-events: none;
+  }
+  .px-toast {
+    pointer-events: auto;
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-4);
+    color: var(--ink);
+    text-shadow: var(--shadow-text);
+    background: var(--tooltip-bg);
+    box-shadow:
+      inset var(--px) var(--px) 0 var(--bevel-light),
+      0 0 0 2px var(--tooltip-border),
+      0 0 0 var(--px) var(--outline);
+    animation: px-toast-in var(--toast-dur) steps(4) both;
+  }
+  .px-toast__title {
+    font-family: var(--font-display);
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--gold);
+  }
+  .px-toast__line {
+    margin-top: var(--space-1);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.4;
+  }
+  .px-toast__close {
+    margin-left: auto;
+    padding: var(--space-1) var(--space-2);
+    font-family: var(--font-display);
+    font-size: 16px;
+    color: var(--stone-300);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+  }
+  .px-toast__close:hover {
+    color: var(--gold);
+  }
+  .px-toast__close:focus-visible {
+    outline: var(--px) solid var(--diamond);
+    outline-offset: var(--px);
+  }
+  @keyframes px-toast-in {
+    from {
+      transform: translateX(calc(100% + var(--space-4)));
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+
+  /* ---------- XPBar ---------- */
+  .px-xp {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-family: var(--font-display);
+    font-size: 13px;
+    color: #4ade80;
+    text-shadow: 1px 1px 0 #000000;
+    width: 100%;
+  }
+  .px-xp__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    background-color: #0e1224;
+    border: 2px solid #eab308;
+    color: #fde047;
+    font-family: var(--font-display);
+    font-size: 11px;
+    letter-spacing: 0.05em;
+    box-shadow: 2px 2px 0 #000000;
+    white-space: nowrap;
+    text-shadow: 1px 1px 0 #000000;
+  }
+  .px-xp__track {
+    position: relative;
+    flex: 1 1 auto;
+    height: 16px;
+    background: #090c18;
+    border: 2px solid #000000;
+    box-shadow:
+      inset 1px 1px 0 rgba(255, 255, 255, 0.15),
+      inset -1px -1px 0 rgba(0, 0, 0, 0.8),
+      0 0 0 1px #1e2544;
+    overflow: hidden;
+  }
+  .px-xp__fill {
+    height: 100%;
+    background: linear-gradient(180deg, #bef264 0%, #4ade80 50%, #15803d 100%);
+    box-shadow:
+      0 0 12px rgba(74, 222, 128, 0.7),
+      inset 0 2px 0 rgba(255, 255, 255, 0.6);
+    transition: width 0.12s ease-out;
+  }
+  /* segment notches every 24px */
+  .px-xp__track::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 22px,
+      rgba(0, 0, 0, 0.7) 22px,
+      rgba(0, 0, 0, 0.7) 24px
+    );
+  }
+
+  /* ---------- Hotbar (Default & Compact) ---------- */
+  .px-hotbar {
+    display: inline-flex;
+    gap: var(--space-2);
+    padding: var(--space-2);
+    background: var(--stone-900);
+    box-shadow:
+      inset var(--px) var(--px) 0 var(--bevel-light),
+      inset calc(var(--px) * -1) calc(var(--px) * -1) 0 var(--bevel-dark),
+      0 0 0 var(--px) var(--outline);
+  }
+  .px-hotbar__item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-2);
+    min-width: calc(var(--px) * 24);
+    text-decoration: none;
+    color: var(--ink);
+  }
+  .px-hotbar__label {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    line-height: 1;
+    color: var(--ink);
+    text-shadow: var(--shadow-text);
+  }
+  .px-hotbar__key {
+    position: absolute;
+    top: 0;
+    left: var(--space-1);
+    font-size: 16px;
+    line-height: 1;
+    color: var(--stone-300);
+    text-shadow: var(--shadow-text);
+    pointer-events: none;
+  }
+
+  /* Compact HUD Strip Hotbar */
+  .px-hotbar-compact {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .px-hotbar-compact__item {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 8px;
+    background-color: #0e1224;
+    border: 2px solid #1e2544;
+    color: #cbd5e1;
+    font-family: var(--font-display);
+    font-size: 11px;
+    text-decoration: none;
+    box-shadow: 2px 2px 0 #000000;
+    cursor: pointer;
+    touch-action: manipulation;
+    transition: all 0.12s ease;
+  }
+  .px-hotbar-compact__item:hover {
+    color: #ffffff;
+    border-color: #facc15;
+    background-color: #161c38;
+    transform: translateY(-1px);
+  }
+  .px-hotbar-compact__item--selected {
+    color: #ffcc00;
+    border-color: #facc15;
+    background-color: #1a224a;
+    box-shadow: 0 0 8px rgba(250, 204, 21, 0.4), 2px 2px 0 #000000;
+  }
+  .px-hotbar-compact__key {
+    display: inline-block;
+    padding: 1px 4px;
+    font-size: 9px;
+    font-weight: bold;
+    color: #facc15;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(250, 204, 21, 0.4);
+  }
+  .px-hotbar-compact__label {
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-size: 10px;
+  }
+
+  /* ---------- PixelDivider (Game/Tech Pixel Seams - zero literal grass blocks) ---------- */
+  .px-divider {
+    display: block;
+    width: 100%;
+    image-rendering: pixelated;
+    position: relative;
+    z-index: 10;
+  }
+  .px-divider--rail {
+    height: 16px;
+    background-color: var(--stone-900);
+    box-shadow:
+      inset 0 var(--px) 0 var(--bevel-light),
+      inset 0 calc(var(--px) * -1) 0 var(--bevel-dark),
+      0 0 0 var(--px) var(--outline);
+    position: relative;
+  }
+  .px-divider--rail::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--gold) 0px,
+      var(--gold) 16px,
+      transparent 16px,
+      transparent 24px
+    );
+  }
+  .px-divider--tech {
+    height: 12px;
+    background: repeating-linear-gradient(
+      -45deg,
+      var(--stone-900) 0px,
+      var(--stone-900) 12px,
+      var(--gold-dark) 12px,
+      var(--gold-dark) 24px
+    );
+    box-shadow: 0 0 0 var(--px) var(--outline);
+  }
+  .px-divider--strata {
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 0 var(--px) var(--outline);
+  }
+  .px-divider--strata > span {
+    display: block;
+    height: var(--space-2);
+    background-size: var(--tex-size) var(--tex-size);
+    background-repeat: repeat-x;
+  }
+  .px-divider__stone {
+    background-color: var(--stone-700);
+    background-image: var(--tex-stone);
+  }
+  .px-divider__deepslate {
+    background-color: var(--stone-900);
+    background-image: var(--tex-deepslate);
+  }
+  .px-divider__bedrock {
+    background-color: var(--bedrock);
+    background-image: var(--tex-bedrock);
+  }
+
+  /* ---------- SplashText ---------- */
+  .px-splash {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 16px;
+    line-height: 1.4;
+    color: var(--gold);
+    text-shadow: var(--shadow-text);
+    transform: rotate(-12deg);
+    transform-origin: center;
+    animation: px-splash-pulse 1s steps(2) infinite alternate;
+  }
+  @keyframes px-splash-pulse {
+    from {
+      transform: rotate(-12deg) scale(1);
+    }
+    to {
+      transform: rotate(-12deg) scale(1.1);
+    }
+  }
+
+  /* ---------- Item frame / caption plate helper ---------- */
+  .px-frame {
+    display: block;
+    padding: var(--space-2);
+    background: var(--dirt-dark);
+    box-shadow:
+      inset var(--px) var(--px) 0 var(--bevel-light),
+      0 0 0 var(--px) var(--outline);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .px-splash,
+    .px-toast {
+      animation: none;
+    }
+    .px-btn,
+    .px-slot {
+      transition: none;
+    }
+  }
+
+  /* ---------- Custom Pixel Cursor (Fine Pointer / Desktop >= 640px only) ---------- */
+  @media (pointer: fine) and (min-width: 640px) {
+    body {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath fill='%23000' d='M0 0h5v1H0zm0 1h7v1H0zm0 1h9v1H0zm0 1h10v1H0zm0 1h10v1H0zm0 1h9v1H0zm0 1h7v1H0zm0 1h6v1H0zm0 1h5v1H0zm0 1h4v1H0zm0 1h3v1H0zm0 1h2v1H0zm0 1h1v1H0z'/%3E%3Cpath fill='%23fff' d='M1 1h3v1H1zm0 1h5v1H1zm0 1h7v1H1zm0 1h8v1H1zm0 1h7v1H1zm0 1h5v1H1zm0 1h3v1H1zm0 1h2v1H1zm0 1h1v1H1z'/%3E%3C/svg%3E"), default;
+    }
+    a, button, [role="button"], [role="link"], .cursor-pointer {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath fill='%23000' d='M4 0h3v1H4zm-2 2h3v1H2zm0 1h10v1H2zm0 1h11v1H2zm0 1h11v1H2zm0 1h11v1H2zm2 1h7v1H4zm2 2h3v1H6z'/%3E%3Cpath fill='%23f59e0b' d='M5 1h1v1H5zm-2 2h1v1H3zm0 1h8v1H3zm0 1h9v1H3zm0 1h9v1H3zm2 1h5v1H5zm2 2h1v1H7z'/%3E%3C/svg%3E"), pointer;
+    }
+    .cursor-grab {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath fill='%23000' d='M4 2h8v1H4zm-2 3h12v1H2zm0 1h12v7H2zm2 7h8v1H4z'/%3E%3Cpath fill='%23fbbf24' d='M5 3h6v2H5zm-2 3h10v6H3zm2 6h6v1H5z'/%3E%3C/svg%3E"), grab;
+    }
+    .cursor-grabbing {
+      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' shape-rendering='crispEdges'%3E%3Cpath fill='%23000' d='M3 3h10v1H3zm-1 3h12v1H2zm0 1h12v5H2zm2 5h8v1H4z'/%3E%3Cpath fill='%23f59e0b' d='M4 4h8v2H4zm-1 3h10v4H3zm2 4h6v1H5z'/%3E%3C/svg%3E"), grabbing;
+    }
+  }
+
+  /* Strict Mobile & Coarse Pointer Floor: Never use custom cursor under 640px or on touch */
+  @media (max-width: 639px), (pointer: coarse) {
+    body, a, button, [role="button"], [role="link"], .cursor-pointer, .cursor-grab, .cursor-grabbing, canvas {
+      cursor: auto !important;
+    }
+  }
+
+  /* ---------- Easter Egg: Cerberus Runner ---------- */
+  .cerberus-runner {
+    animation: px-cerberus-sprint 7.5s linear forwards;
+    left: -240px;
+  }
+  @keyframes px-cerberus-sprint {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(calc(100vw + 380px));
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cerberus-runner {
+      animation: none !important;
+      left: 50% !important;
+      transform: translateX(-50%) !important;
+    }
+  }
+}

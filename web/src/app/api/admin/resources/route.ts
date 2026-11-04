@@ -7,12 +7,11 @@ import { fileField, parseResourceForm, uploadResourceFile } from "@/lib/adminRes
 export const dynamic = "force-dynamic";
 
 const unauthorized = () =>
-  NextResponse.json({ success: false, error: "Chưa đăng nhập" }, { status: 401 });
+  NextResponse.json({ success: false, error: "Unauthorized: Admin session required" }, { status: 401 });
 
 /**
  * GET /api/admin/resources
- * Danh sách cho trang Admin. Đọc không qua CDN nên bài vừa đăng/sửa hiện ngay
- * (GET /api/resources của BE dùng CDN nên có thể trễ vài giây).
+ * Fetches all engineering resources from Sanity Content Lake.
  */
 export async function GET() {
   if (!(await getSession())) return unauthorized();
@@ -25,26 +24,55 @@ export async function GET() {
   } catch (error: any) {
     console.error("[/api/admin/resources GET]", error);
     return NextResponse.json(
-      { success: false, error: "Không tải được danh sách", details: error?.message },
+      { success: false, error: "Failed to fetch resource list", details: error?.message },
       { status: 500 }
     );
   }
 }
 
 /**
- * POST /api/admin/resources   (multipart/form-data)
- * Fields: title*, category*, author, tags ("a, b, c"), description, file
+ * POST /api/admin/resources
+ * Supports both JSON body (rich block builder) and multipart/form-data.
  */
 export async function POST(request: NextRequest) {
   if (!(await getSession())) return unauthorized();
   if (!process.env.SANITY_API_TOKEN) {
     return NextResponse.json(
-      { success: false, error: "Thiếu SANITY_API_TOKEN (token có quyền ghi) trong .env.local" },
+      { success: false, error: "Server configuration error: SANITY_API_TOKEN write token missing in .env.local" },
       { status: 500 }
     );
   }
 
+  const contentType = request.headers.get("content-type") || "";
+
   try {
+    if (contentType.includes("application/json")) {
+      const body = await request.json();
+      const { title, category, author, tags, description, fileAssetId, publishedAt } = body;
+
+      if (!title || typeof title !== "string" || !title.trim()) {
+        return NextResponse.json({ success: false, error: "Resource title is required" }, { status: 400 });
+      }
+
+      const doc: { _type: "resource"; [key: string]: any } = {
+        _type: "resource",
+        title: title.trim(),
+        category: category || "Mechanical",
+        author: author?.trim() || "RoboLads Engineering Unit",
+        tags: Array.isArray(tags) ? tags : [],
+        publishedAt: publishedAt || new Date().toISOString(),
+        description: Array.isArray(description) ? description : [],
+      };
+
+      if (fileAssetId) {
+        doc.file = fileField(fileAssetId);
+      }
+
+      const created = await writeClient.create(doc);
+      return NextResponse.json({ success: true, data: created }, { status: 201 });
+    }
+
+    // Fallback: multipart/form-data
     const { errors, values, file } = parseResourceForm(await request.formData());
     if (errors.length) {
       return NextResponse.json({ success: false, error: errors.join("; ") }, { status: 400 });
@@ -63,7 +91,7 @@ export async function POST(request: NextRequest) {
   } catch (error: any) {
     console.error("[/api/admin/resources POST]", error);
     return NextResponse.json(
-      { success: false, error: "Không thể tạo bài viết", details: error?.message },
+      { success: false, error: "Failed to create resource", details: error?.message },
       { status: 500 }
     );
   }

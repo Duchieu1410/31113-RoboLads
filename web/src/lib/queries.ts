@@ -62,6 +62,43 @@ export interface Resource {
   publishedAt?: string;
 }
 
+export type CalloutTone = "info" | "important" | "tip" | "warning";
+
+export interface CalloutBlock {
+  _key: string;
+  _type: "callout";
+  tone?: CalloutTone;
+  title?: string;
+  text?: string;
+}
+
+export interface ImageBlock {
+  _key: string;
+  _type: "image";
+  asset?: {
+    _ref?: string;
+    _type?: "reference";
+    url?: string;
+  };
+  alt?: string;
+  caption?: string;
+}
+
+export interface Post {
+  _id: string;
+  _type: "post";
+  _createdAt?: string;
+  _updatedAt?: string;
+  title: string;
+  slug: { current: string };
+  excerpt?: string;
+  author?: string;
+  category?: string;
+  tags?: string[];
+  publishedAt?: string;
+  body?: any[];
+}
+
 export interface ResourceFilterOptions {
   category?: ResourceCategory | string;
   tag?: string;
@@ -125,7 +162,16 @@ export const ALL_RESOURCES_QUERY = defineQuery(`
     title,
     category,
     tags,
-    description,
+    description[] {
+      ...,
+      _type == "image" => {
+        ...,
+        asset-> {
+          _id,
+          url
+        }
+      }
+    },
     author,
     publishedAt,
     file {
@@ -154,7 +200,16 @@ export const RESOURCE_BY_ID_QUERY = defineQuery(`
     title,
     category,
     tags,
-    description,
+    description[] {
+      ...,
+      _type == "image" => {
+        ...,
+        asset-> {
+          _id,
+          url
+        }
+      }
+    },
     author,
     publishedAt,
     file {
@@ -166,6 +221,53 @@ export const RESOURCE_BY_ID_QUERY = defineQuery(`
         extension,
         mimeType,
         size
+      }
+    }
+  }
+`);
+
+/**
+ * GROQ query to retrieve all posts ordered by creation date descending.
+ */
+export const ALL_POSTS_QUERY = defineQuery(`
+  *[_type == "post"] | order(_createdAt desc) {
+    _id,
+    _type,
+    _createdAt,
+    _updatedAt,
+    title,
+    slug,
+    excerpt,
+    author,
+    category,
+    tags,
+    publishedAt,
+    body
+  }
+`);
+
+/**
+ * GROQ query to retrieve a single post by _id with expanded image assets if present.
+ */
+export const POST_BY_ID_QUERY = defineQuery(`
+  *[_type == "post" && _id == $id][0] {
+    _id,
+    _type,
+    _createdAt,
+    _updatedAt,
+    title,
+    slug,
+    excerpt,
+    author,
+    category,
+    tags,
+    publishedAt,
+    body[] {
+      ...,
+      asset-> {
+        _id,
+        url,
+        originalFilename
       }
     }
   }

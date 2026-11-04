@@ -1,0 +1,15 @@
+# HSGS RoboLads (FTC Team #31113)
+
+Official website and engineering repository of HSGS RoboLads, FIRST Tech Challenge Team #31113 representing the High School for Gifted Students (HSGS, Hanoi University of Science, Vietnam National University).
+
+## Overview
+- Competition: FIRST Tech Challenge (FTC)
+- Team Number: #31113
+- Base: Hanoi, Vietnam
+- Robot: DecodeBot 2026
+- Core Competencies: Parametric CAD in Onshape, Dead-wheel Odometry, Autonomous Navigation, Community Outreach.
+
+## Key Links
+- [/](#robot-target): DecodeBot 2026 3D CAD Stage
+- [/resources](/resources): Open-Source Engineering Documentation, Mechanical Specs, CAD files
+- [/blog](/blog): Competition Build Logs, Post-Mortems, Outreach Updates
